@@ -1,0 +1,10 @@
+orm:
+  singular: Environment
+  plural: Environments
+type: object
+properties:
+  name:
+    type: string
+  hosts:
+    type: array
+    items:

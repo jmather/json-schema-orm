@@ -1,0 +1,8 @@
+orm:
+  singular: Host
+  plural: Hosts
+type: object
+properties:
+  name:
+    type: string
+  

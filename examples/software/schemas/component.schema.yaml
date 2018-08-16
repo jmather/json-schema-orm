@@ -1,0 +1,9 @@
+orm:
+  singular: Component
+  plural: Components
+type: object
+properties:
+  name:
+    type: string
+  repository:
+    type: string
