@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const CliApp = require('json-schema-orm').CliApp
+const CliApp = require(__dirname + '/../index').CliApp
 
 const cli = new CliApp()
 

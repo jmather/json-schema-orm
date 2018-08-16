@@ -1,0 +1,5 @@
+name: Core Project
+type: git
+checkout:
+  web: http://example.com/site.git
+  ssh: ssh://git@example.com/site.git

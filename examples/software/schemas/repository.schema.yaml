@@ -1,0 +1,24 @@
+orm:
+  singular: Repository
+  plural: Repositories
+type: object
+properties:
+  name:
+    type: string
+  type:
+    type: string
+    enum:
+      - git
+      - subversion
+      - cvs
+  checkout:
+    type: object
+    properties:
+      web:
+        type: string
+        format: uri
+      ssh:
+        type: string
+        format: uri
+    required: [ web ]
+required: [ name, type, checkout ]

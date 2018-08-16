@@ -1,0 +1,13 @@
+allOf:
+ -  type: object
+    properties:
+      orm:
+        type: object
+        properties:
+          singular:
+            type: string
+          plural:
+            type: string
+        required: [ singular, plural ]
+        additionalProperties: false
+    required: [ orm ]
