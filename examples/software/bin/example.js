@@ -12,17 +12,22 @@ const orm = loader.loadSchemas(projectSchemasFile)
 
 loader.loadData(dataPath)
 
+// simple get
 // returns: { name: 'Core API', reposiotry: { name: 'Core Project' } }
 console.log(JSON.stringify(orm.getRepository('component').get('Core API')))
 
+// match get
 // returns: [{"name":"Core UI","repository":{"name":"Core Project"},"depends_on":[{"child_component_name":"Core API"}]}]
 console.log(JSON.stringify(orm.getRepository('component').getAllBy(['repository', 'name'], 'Core Project')))
 
+// has_one
 // returns: {"name":"Core Project","type":"git","checkout":{"web":"http://example.com/site.git","ssh":"ssh://git@example.com/site.git"}}
 console.log(JSON.stringify(orm.getRepository('component').get('Core API').repository))
 
+// belongs_to_many
 // returns: [{"name":"Core API","repository":{"name":"Core Project"}},{"name":"Core UI","repository":{"name":"Core Project"},"depends_on":[{"child_component_name":"Core API"}]}]
 console.log(JSON.stringify(orm.getRepository('repository').get('Core Project').components))
 
+// has_and_belongs_to_many
 // returns: TBD...
 console.log(JSON.stringify(orm.getRepository('component').get('Core UI').depends_on))

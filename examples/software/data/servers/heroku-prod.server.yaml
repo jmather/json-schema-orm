@@ -2,7 +2,9 @@ name: Heroku Production
 description: 3 node heroku environment
 type: cluster
 serves:
-  - component:
+  - name: Production Core API
+    environment: production
+    component:
       name: Core API
     domain:
       name: api.core.com

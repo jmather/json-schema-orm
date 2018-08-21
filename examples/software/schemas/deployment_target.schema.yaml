@@ -4,17 +4,29 @@ orm:
   relations:
     - schema: component.schema.yaml
       local_property: component
-      local_key: component.name
+      local_key: name
       foreign_key: name
       type: has_one
     - schema: server.schema.yaml
       local_property: server
-      local_key: server.name
+      local_key: name
+      foreign_key: name
+      type: has_one
+    - schema: domain.schema.yaml
+      local_property: domain
+      local_key: name
       foreign_key: name
       type: has_one
 type: object
 properties:
+  name:
+    type: string
   component:
+    type: object
+    properties:
+      name:
+        type: string
+  domain:
     type: object
     properties:
       name:
@@ -24,3 +36,6 @@ properties:
     properties:
       name:
         type: string
+  path:
+    type: string
+    default: /

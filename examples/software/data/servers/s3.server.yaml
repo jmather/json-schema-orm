@@ -1,7 +1,9 @@
 name: Core UI S3 Bucket
 description: S3 bucket that hosts the public website
 serves:
-  - component:
+  - name: Production Core UI
+    environment: Production
+    component:
       name: Core UI
     domain:
       name: www.core.com

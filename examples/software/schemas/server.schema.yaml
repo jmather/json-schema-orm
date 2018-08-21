@@ -10,7 +10,7 @@ properties:
   type:
     type: string
     enum: [ phycisal, virtual, cluster ]
-  hosts:
+  serves:
     type: array
     items:
       $ref: deployment_target.schema.yaml
