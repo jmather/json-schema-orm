@@ -1,0 +1,7 @@
+orm:
+  singular: Domain
+  plural: Domains
+type: object
+properties:
+  name:
+    type: string

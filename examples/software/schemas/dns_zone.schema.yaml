@@ -1,0 +1,20 @@
+orm:
+  singular: DNS Zone
+  plural: DNS Zones
+type: object
+properties:
+  domain_name:
+    type: string
+  records:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum: [ a, cname, txt ]
+        target:
+          type: string
+  required: [ domain_name ]

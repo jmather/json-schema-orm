@@ -8,6 +8,30 @@ allOf:
             type: string
           plural:
             type: string
-        required: [ singular, plural ]
+          primary_property:
+            type: string
+            default: name
+          relations:
+            type: array
+            items:
+              type: object
+              properties:
+                schema:
+                  type: string
+                local_property:
+                  type: string
+                local_key:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                foreign_key:
+                  type: string
+                type:
+                  type: string
+                  enum: [ has_many, has_one ]
+              required: [ schema, property, local_key, foreign_key, type ]
+        required: [ singular, plural, primary_property ]
         additionalProperties: false
     required: [ orm ]

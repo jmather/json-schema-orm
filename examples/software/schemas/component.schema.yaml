@@ -1,9 +1,37 @@
 orm:
   singular: Component
   plural: Components
+  relations:
+    - schema: repository.schema.yaml
+      local_property: repository
+      local_key: name
+      foreign_key: name
+      type: has_one
+    - schema: component.schema.yaml
+      local_property: depends_on
+      local_key: name
+      foreign_key: parent_component[].name
+      type: has_many
+    - schema: component.schema.yaml
+      local_property: depended_on_by
+      local_key: name
+      foreign_key: child_component[].name
+      type: has_many
+
 type: object
 properties:
   name:
     type: string
   repository:
-    type: string
+    type: object
+    properties:
+      name:
+        type: string
+  depends_on:
+    type: array
+    items:
+      $ref: component_dependency.schema.yaml
+  depended_on_by:
+    type: array
+    items:
+      $ref: component_dependency.schema.yaml

@@ -1,0 +1,403 @@
+{
+  "oneOf": [
+    {
+      "$ref": "#/definitions/schemas/component_dependency/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/component/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/deployment_target/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/dns_zone/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/domain/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/environment/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/repository/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/server/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/url/schema"
+    }
+  ],
+  "definitions": {
+    "schemas": {
+      "component_dependency": {
+        "path": "component_dependency.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Component Dependency",
+            "plural": "Component Dependencies",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "parent_component": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "child_component": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "component": {
+        "path": "component.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Component",
+            "plural": "Components",
+            "relations": [
+              {
+                "schema": "repository.schema.yaml",
+                "local_property": "repository",
+                "local_key": "name",
+                "foreign_key": "name",
+                "type": "has_one"
+              },
+              {
+                "schema": "component.schema.yaml",
+                "local_property": "depends_on",
+                "local_key": "name",
+                "foreign_key": "parent_component[].name",
+                "type": "has_many"
+              },
+              {
+                "schema": "component.schema.yaml",
+                "local_property": "depended_on_by",
+                "local_key": "name",
+                "foreign_key": "child_component[].name",
+                "type": "has_many"
+              }
+            ],
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "repository": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "depends_on": {
+              "type": "array",
+              "items": {
+                "orm": {
+                  "singular": "Component Dependency",
+                  "plural": "Component Dependencies"
+                },
+                "type": "object",
+                "properties": {
+                  "parent_component": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "child_component": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "depended_on_by": {
+              "type": "array",
+              "items": {
+                "$ref": "#/properties/depends_on/items"
+              }
+            }
+          }
+        }
+      },
+      "deployment_target": {
+        "path": "deployment_target.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Deployment Target",
+            "plural": "Deployment Targets",
+            "relations": [
+              {
+                "schema": "component.schema.yaml",
+                "local_property": "component",
+                "local_key": "component.name",
+                "foreign_key": "name",
+                "type": "has_one"
+              },
+              {
+                "schema": "server.schema.yaml",
+                "local_property": "server",
+                "local_key": "server.name",
+                "foreign_key": "name",
+                "type": "has_one"
+              }
+            ],
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "component": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "server": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dns_zone": {
+        "path": "dns_zone.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "DNS Zone",
+            "plural": "DNS Zones",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "domain_name": {
+              "type": "string"
+            },
+            "records": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "a",
+                      "cname",
+                      "txt"
+                    ]
+                  },
+                  "target": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "required": [
+              "domain_name"
+            ]
+          }
+        }
+      },
+      "domain": {
+        "path": "domain.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Domain",
+            "plural": "Domains",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "environment": {
+        "path": "environment.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Environment",
+            "plural": "Environments",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "hosts": {
+              "type": "array",
+              "items": null
+            }
+          }
+        }
+      },
+      "repository": {
+        "path": "repository.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Repository",
+            "plural": "Repositories",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "git",
+                "subversion",
+                "cvs"
+              ]
+            },
+            "checkout": {
+              "type": "object",
+              "properties": {
+                "web": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "ssh": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "web"
+              ]
+            }
+          },
+          "required": [
+            "name",
+            "type",
+            "checkout"
+          ]
+        }
+      },
+      "server": {
+        "path": "server.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Server",
+            "plural": "Servers",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "phycisal",
+                "virtual",
+                "cluster"
+              ]
+            },
+            "hosts": {
+              "type": "array",
+              "items": {
+                "orm": {
+                  "singular": "Deployment Target",
+                  "plural": "Deployment Targets",
+                  "relations": [
+                    {
+                      "schema": "component.schema.yaml",
+                      "local_property": "component",
+                      "local_key": "component.name",
+                      "foreign_key": "name",
+                      "type": "has_one"
+                    },
+                    {
+                      "schema": "server.schema.yaml",
+                      "local_property": "server",
+                      "local_key": "server.name",
+                      "foreign_key": "name",
+                      "type": "has_one"
+                    }
+                  ]
+                },
+                "type": "object",
+                "properties": {
+                  "component": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "server": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "url": {
+        "path": "url.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "URL",
+            "plural": "URLs",
+            "primary_property": "url"
+          },
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "environment": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  }
+}

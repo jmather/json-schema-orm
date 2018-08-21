@@ -1,0 +1,11 @@
+orm:
+  singular: URL
+  plural: URLs
+  primary_property: url
+type: object
+properties:
+  url:
+    type: string
+    format: uri
+  environment:
+    type: object

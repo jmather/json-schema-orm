@@ -51,8 +51,9 @@ cli.main((args, options) => {
                 schemas = glob.sync(schemaPath)
 
                 schemas.forEach(schemaFile => {
+                    cli.info(`Loading ${schemaFile}...`)
                     const schema = tools.loadYAML(schemaFile)
-                    cli.info(`checking ${schemaFile}...`)
+                    cli.info(`Checking ${schemaFile}...`)
                     if (! ajv.validate(metaSchema, schema)) {
                         cli.error(`Error processing ${schemaFile}`)
                         cli.error(tools.prettyJSON(ajv.errors))
@@ -86,7 +87,7 @@ cli.main((args, options) => {
                     cli.info(`checking ${path.basename(dataFile)} against ${path.basename(schemaFile)}...`)
                     const data = tools.loadYAML(dataFile)
                     if (!ajv.validate(metaSchema, data)) {
-                        cli.error(`Error processing ${schemaFile}`)
+                        cli.error(`Error processing ${dataFile}`)
                         cli.error(tools.prettyJSON(ajv.errors))
                         hadError = true
                     }

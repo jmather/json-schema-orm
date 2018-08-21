@@ -1,0 +1,15 @@
+orm:
+  singular: Component Dependency
+  plural: Component Dependencies
+type: object
+properties:
+  parent_component:
+    type: object
+    properties:
+      name:
+        type: string
+  child_component:
+    type: object
+    properties:
+      name:
+        type: string

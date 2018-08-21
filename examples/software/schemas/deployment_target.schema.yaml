@@ -1,0 +1,26 @@
+orm:
+  singular: Deployment Target
+  plural: Deployment Targets
+  relations:
+    - schema: component.schema.yaml
+      local_property: component
+      local_key: component.name
+      foreign_key: name
+      type: has_one
+    - schema: server.schema.yaml
+      local_property: server
+      local_key: server.name
+      foreign_key: name
+      type: has_one
+type: object
+properties:
+  component:
+    type: object
+    properties:
+      name:
+        type: string
+  server:
+    type: object
+    properties:
+      name:
+        type: string

@@ -1,2 +1,4 @@
-name: API
-reposiotry: Core Project
+name: Core API
+repository:
+  name: Core Project
+

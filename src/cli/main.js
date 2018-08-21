@@ -1,4 +1,8 @@
 const cli = require('cli')
+const glob = require('glob')
+const path = require('path')
+
+const files = glob.sync(__dirname + '/commands/*.js').map(file => path.basename(file, '.js'))
 
 class CliMain {
   constructor() {
@@ -8,11 +12,9 @@ class CliMain {
   run() {
     cli.parse(
       {
-        project: ['p', 'Path to project root', 'dir'],
+        project: ['p', 'Path to project root', 'dir']
       },
-      [
-        'validate'
-      ]
+      files
     )
 
     if (cli.command) {
