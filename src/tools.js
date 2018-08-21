@@ -10,7 +10,7 @@ const tools = {
         }
 
         if (typeof options === 'string') {
-            return path.resolve(__dirname + '/../', options)
+            return path.resolve(__dirname, options)
         }
 
         return path.resolve(__dirname + '/../')

@@ -1,4 +1,4 @@
-const tools = require('../tools')
+const tools = require('../../tools')
 const cli = require('cli')
 const Ajv = require('ajv')
 const glob = require('glob')

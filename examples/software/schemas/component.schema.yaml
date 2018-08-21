@@ -7,15 +7,15 @@ orm:
       local_key: name
       foreign_key: name
       type: has_one
-    - schema: component.schema.yaml
+    - schema: component_dependency.schema.yaml
       local_property: depends_on
       local_key: name
-      foreign_key: parent_component[].name
+      foreign_key: child_component_name
       type: has_many
-    - schema: component.schema.yaml
+    - schema: component_dependency.schema.yaml
       local_property: depended_on_by
       local_key: name
-      foreign_key: child_component[].name
+      foreign_key: parent_component_name
       type: has_many
 
 type: object

@@ -30,8 +30,8 @@ allOf:
                   type: string
                 type:
                   type: string
-                  enum: [ has_many, has_one ]
-              required: [ schema, property, local_key, foreign_key, type ]
-        required: [ singular, plural, primary_property ]
+                  enum: [ has_many, has_one, belongs_to_one, belongs_to_many ]
+              required: [ schema, local_property, local_key, foreign_key, type ]
+        required: [ singular, plural ]
         additionalProperties: false
     required: [ orm ]

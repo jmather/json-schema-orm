@@ -68,7 +68,19 @@ class ModelHandler {
     }
 
     _getHasMany(definition, obj) {
+        const matches = []
+        _.forEach(obj[definition.local_property], relObj => {
+            const localSearch = (definition.local_key instanceof Array) ? definition.local_key : [definition.local_key]
 
+            const value = _.property(localSearch)(obj)
+
+            const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
+            const repo = this.orm.getRepositoryByPath(definition.schema)
+
+            matches.push(repo.getAllBy(foreignSearch, value)[0])
+        })
+
+        return matches
     }
 }
 
