@@ -27,7 +27,11 @@ allOf:
                       items:
                         type: string
                 foreign_key:
-                  type: string
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
                 type:
                   type: string
                   enum: [ has_many, has_one, belongs_to_one, belongs_to_many ]
