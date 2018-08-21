@@ -40,8 +40,16 @@ class ModelHandler {
                 return this._getHasOne(definition, obj)
             }
 
+            if (definition.type === 'belongs_to_one') {
+                return this._getBelongsToOne(definition, obj)
+            }
+
             if (definition.type === 'has_many') {
                 return this._getHasMany(definition, obj)
+            }
+
+            if (definition.type === 'belongs_to_many') {
+                return this._getBelongsToMany(definition, obj)
             }
         }
 
@@ -65,6 +73,46 @@ class ModelHandler {
         const repo = this.orm.getRepositoryByPath(definition.schema)
 
         return repo.getAllBy(foreignSearch, value)[0]
+    }
+
+    _getBelongsToOne(definition, obj) {
+        console.log('Belongs to one...')
+        let localSearch = []
+
+        if (definition.local_key instanceof Array) {
+            localSearch = localSearch.concat(definition.local_key)
+        } else {
+            localSearch.push(definition.local_key)
+        }
+        const value = _.property(localSearch)(obj)
+
+        console.log('Belongs to one...', { localSearch, value })
+
+        const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
+        const repo = this.orm.getRepositoryByPath(definition.schema)
+
+        return repo.getAllBy(foreignSearch, value)[0]
+    }
+
+    _getBelongsToMany(definition, obj) {
+        console.log('Belongs to many...')
+        let localSearch = []
+
+        if (definition.local_key instanceof Array) {
+            localSearch = localSearch.concat(definition.local_key)
+        } else {
+            localSearch.push(definition.local_key)
+        }
+        const value = _.property(localSearch)(obj)
+
+        console.log('Belongs to many...', { localSearch, value })
+
+        const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
+
+        console.log('Belongs to many...', { foreignSearch, value })
+        const repo = this.orm.getRepositoryByPath(definition.schema)
+
+        return repo.getAllBy(foreignSearch, value)
     }
 
     _getHasMany(definition, obj) {
