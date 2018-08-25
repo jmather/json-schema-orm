@@ -1,7 +1,5 @@
-const ModelHandler = require('./ModelHandler')
-const Ajv = require('ajv')
 const _ = require('underscore')
-const ajv = new Ajv()
+const ModelHandler = require('./ModelHandler')
 
 class Repository {
     /***
@@ -22,11 +20,11 @@ class Repository {
     }
 
     _buildIndexes() {
-        if (! this.schema.orm.primary_property) {
+        if (! this.schema.getPrimaryProperty()) {
             throw new Error(`Repository ${this.name} does not have primary_property defined!`)
         }
 
-        const primaryKey = this.schema.orm.primary_property
+        const primaryKey = this.schema.getPrimaryProperty()
         this.primaryIndex = {
             type: 'primary',
             properties: [primaryKey],
@@ -45,13 +43,37 @@ class Repository {
         })
     }
 
+    _wrap(obj) {
+        return new Proxy(obj, this.modelHandler)
+    }
+
+    getName() {
+        return this.name
+    }
+
+    getSchema() {
+        return this.schema
+    }
+
+    getAll() {
+        return _.map(this.objects, this._wrap)
+    }
+
     add(obj) {
-        if (obj instanceof Proxy && obj.__schema === this.schema) {
-            return false
+        if (obj instanceof Proxy) {
+            return null
         }
 
-        this.objects.push(obj)
-        this._index(obj)
+        const model = this._wrap({})
+
+        _.forEach(obj, (propValue, propName) => {
+            model[propName] = propValue
+        })
+
+        this.objects.push(model)
+        this._index(model)
+
+        return obj
     }
 
     get(id) {
@@ -76,7 +98,7 @@ class Repository {
             }
         })
 
-        return matches;
+        return matches
     }
 
     getByIndex(indexName, value) {

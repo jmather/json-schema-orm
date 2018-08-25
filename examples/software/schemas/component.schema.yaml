@@ -4,29 +4,28 @@ orm:
   relations:
     - schema: repository.schema.yaml
       local_property: repository
-      local_key: name
+      local_key: repository_name
       foreign_key: name
       type: has_one
     - schema: component_dependency.schema.yaml
       local_property: depends_on
       local_key: name
-      foreign_key: child_component_name
+      foreign_key: parent_component_name
       type: has_many
     - schema: component_dependency.schema.yaml
       local_property: depended_on_by
       local_key: name
-      foreign_key: parent_component_name
+      foreign_key: child_component_name
       type: has_many
 
 type: object
 properties:
   name:
     type: string
+  repository_name:
+    type: string
   repository:
-    type: object
-    properties:
-      name:
-        type: string
+    $ref: repository.schema.yaml
   depends_on:
     type: array
     items:
@@ -35,3 +34,4 @@ properties:
     type: array
     items:
       $ref: component_dependency.schema.yaml
+required: [ name ]

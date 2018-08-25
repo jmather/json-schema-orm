@@ -4,7 +4,5 @@ type: cluster
 serves:
   - name: Production Core API
     environment: production
-    component:
-      name: Core API
-    domain:
-      name: api.core.com
+    component_name: Core API
+    domain_name: api.core.com

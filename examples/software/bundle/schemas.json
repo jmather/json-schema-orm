@@ -36,25 +36,35 @@
           "orm": {
             "singular": "Component Dependency",
             "plural": "Component Dependencies",
+            "relations": [
+              {
+                "schema": "component.schema.yaml",
+                "local_property": "parent_component",
+                "local_key": "parent_component_name",
+                "foreign_key": "name",
+                "type": "belongs_to_one"
+              },
+              {
+                "schema": "component.schema.yaml",
+                "local_property": "child_component",
+                "local_key": "child_component_name",
+                "foreign_key": "name",
+                "type": "belongs_to_one"
+              }
+            ],
             "primary_property": "name"
           },
           "type": "object",
           "properties": {
-            "parent_component": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                }
-              }
+            "name": {
+              "type": "expression",
+              "expression": "this.parent_component_name + '_' + this.child_component_name"
             },
-            "child_component": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                }
-              }
+            "parent_component_name": {
+              "type": "string"
+            },
+            "child_component_name": {
+              "type": "string"
             }
           }
         }
@@ -69,7 +79,7 @@
               {
                 "schema": "repository.schema.yaml",
                 "local_property": "repository",
-                "local_key": "name",
+                "local_key": "repository_name",
                 "foreign_key": "name",
                 "type": "has_one"
               },
@@ -77,14 +87,14 @@
                 "schema": "component_dependency.schema.yaml",
                 "local_property": "depends_on",
                 "local_key": "name",
-                "foreign_key": "child_component_name",
+                "foreign_key": "parent_component_name",
                 "type": "has_many"
               },
               {
                 "schema": "component_dependency.schema.yaml",
                 "local_property": "depended_on_by",
                 "local_key": "name",
-                "foreign_key": "parent_component_name",
+                "foreign_key": "child_component_name",
                 "type": "has_many"
               }
             ],
@@ -95,38 +105,96 @@
             "name": {
               "type": "string"
             },
+            "repository_name": {
+              "type": "string"
+            },
             "repository": {
+              "orm": {
+                "singular": "Repository",
+                "plural": "Repositories",
+                "relations": [
+                  {
+                    "schema": "component.schema.yaml",
+                    "local_property": "components",
+                    "local_key": "name",
+                    "foreign_key": [
+                      "repository",
+                      "name"
+                    ],
+                    "type": "belongs_to_many"
+                  }
+                ]
+              },
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "git",
+                    "subversion",
+                    "cvs"
+                  ]
+                },
+                "checkout": {
+                  "type": "object",
+                  "properties": {
+                    "web": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "ssh": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "web"
+                  ]
                 }
-              }
+              },
+              "required": [
+                "name",
+                "type",
+                "checkout"
+              ]
             },
             "depends_on": {
               "type": "array",
               "items": {
                 "orm": {
                   "singular": "Component Dependency",
-                  "plural": "Component Dependencies"
+                  "plural": "Component Dependencies",
+                  "relations": [
+                    {
+                      "schema": "component.schema.yaml",
+                      "local_property": "parent_component",
+                      "local_key": "parent_component_name",
+                      "foreign_key": "name",
+                      "type": "belongs_to_one"
+                    },
+                    {
+                      "schema": "component.schema.yaml",
+                      "local_property": "child_component",
+                      "local_key": "child_component_name",
+                      "foreign_key": "name",
+                      "type": "belongs_to_one"
+                    }
+                  ]
                 },
                 "type": "object",
                 "properties": {
-                  "parent_component": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      }
-                    }
+                  "name": {
+                    "type": "expression",
+                    "expression": "this.parent_component_name + '_' + this.child_component_name"
                   },
-                  "child_component": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      }
-                    }
+                  "parent_component_name": {
+                    "type": "string"
+                  },
+                  "child_component_name": {
+                    "type": "string"
                   }
                 }
               }
@@ -137,7 +205,10 @@
                 "$ref": "#/properties/depends_on/items"
               }
             }
-          }
+          },
+          "required": [
+            "name"
+          ]
         }
       },
       "deployment_target": {
@@ -150,14 +221,21 @@
               {
                 "schema": "component.schema.yaml",
                 "local_property": "component",
-                "local_key": "component.name",
+                "local_key": "component_name",
                 "foreign_key": "name",
                 "type": "has_one"
               },
               {
                 "schema": "server.schema.yaml",
                 "local_property": "server",
-                "local_key": "server.name",
+                "local_key": "server_name",
+                "foreign_key": "name",
+                "type": "has_one"
+              },
+              {
+                "schema": "domain.schema.yaml",
+                "local_property": "domain",
+                "local_key": "domain_name",
                 "foreign_key": "name",
                 "type": "has_one"
               }
@@ -166,21 +244,21 @@
           },
           "type": "object",
           "properties": {
-            "component": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                }
-              }
+            "name": {
+              "type": "string"
             },
-            "server": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                }
-              }
+            "component_name": {
+              "type": "string"
+            },
+            "domain_name": {
+              "type": "string"
+            },
+            "server_name": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string",
+              "default": "/"
             }
           }
         }
@@ -254,10 +332,6 @@
           "properties": {
             "name": {
               "type": "string"
-            },
-            "hosts": {
-              "type": "array",
-              "items": null
             }
           }
         }
@@ -343,7 +417,7 @@
                 "cluster"
               ]
             },
-            "hosts": {
+            "serves": {
               "type": "array",
               "items": {
                 "orm": {
@@ -353,14 +427,21 @@
                     {
                       "schema": "component.schema.yaml",
                       "local_property": "component",
-                      "local_key": "component.name",
+                      "local_key": "component_name",
                       "foreign_key": "name",
                       "type": "has_one"
                     },
                     {
                       "schema": "server.schema.yaml",
                       "local_property": "server",
-                      "local_key": "server.name",
+                      "local_key": "server_name",
+                      "foreign_key": "name",
+                      "type": "has_one"
+                    },
+                    {
+                      "schema": "domain.schema.yaml",
+                      "local_property": "domain",
+                      "local_key": "domain_name",
                       "foreign_key": "name",
                       "type": "has_one"
                     }
@@ -368,21 +449,21 @@
                 },
                 "type": "object",
                 "properties": {
-                  "component": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      }
-                    }
+                  "name": {
+                    "type": "string"
                   },
-                  "server": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string"
-                      }
-                    }
+                  "component_name": {
+                    "type": "string"
+                  },
+                  "domain_name": {
+                    "type": "string"
+                  },
+                  "server_name": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string",
+                    "default": "/"
                   }
                 }
               }
@@ -403,9 +484,6 @@
             "url": {
               "type": "string",
               "format": "uri"
-            },
-            "environment": {
-              "type": "object"
             }
           }
         }

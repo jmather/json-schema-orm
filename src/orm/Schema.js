@@ -1,54 +1,22 @@
-const _ = require('underscore')
-
 class Schema {
     /**
      *
-     * @param {{ oneOf: [ Object ], definitions: { schemas: Object }}} schema
+     * @param {{ orm: Object, properties: Object }} schema
      */
     constructor(schema) {
         this.schema = schema
-        this.filePaths = {}
-
-        this._init()
-    }
-
-    _init() {
-        _.forEach(this.schema, (data, schemaName) => {
-            this.filePaths[data.path] = schemaName
-        })
     }
 
     /**
      *
-     * @param {string} name
-     * @returns {{schema: Object, path: string }}
+     * @returns Array{{ schema: string, local_property: string, local_key: string, foreign_key: string, type: string }}
      */
-    getByName(name) {
-        if (! this.schema[name]) {
-            throw new Error(`${name} is not defined.`)
-        }
-
-        return this.schema[name].schema
+    getRelations() {
+        return this.schema.orm.relations || []
     }
 
-    /**
-     * Returns schema names
-     * @returns {string[]}
-     */
-    getSchemaNames() {
-        const schemaNames = []
-
-        _.forEach(this.schema, (schema, schemaName) => schemaNames.push(schemaName))
-
-        return schemaNames
-    }
-
-    getSchemaNameByPath(path) {
-        if (! this.filePaths[path]) {
-            throw new Error(`No schema known by path ${path}`)
-        }
-
-        return this.filePaths[path]
+    getPrimaryProperty() {
+        return this.schema.orm.primary_property
     }
 }
 

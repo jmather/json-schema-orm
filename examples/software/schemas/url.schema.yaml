@@ -7,5 +7,3 @@ properties:
   url:
     type: string
     format: uri
-  environment:
-    type: object

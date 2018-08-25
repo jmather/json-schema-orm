@@ -19,7 +19,7 @@ cli.main((args, options) => {
         process.exit(1)
     }
 
-    if (args[0].split('.').splice(-1, 1) != 'json') {
+    if (args[0].split('.').splice(-1, 1) !== 'json') {
         cli.error('Output file should be a JSON file.')
         process.exit(1)
     }

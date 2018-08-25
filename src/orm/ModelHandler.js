@@ -6,15 +6,15 @@ class ModelHandler {
         this.orm = orm
         this.overloaded_properties = {}
 
-        this._buildGetters();
+        this._buildGetters()
     }
 
     _buildGetters() {
-        if (! this.schema.orm.relations) {
+        if (! this.schema.getRelations()) {
             return
         }
 
-        _.forEach(this.schema.orm.relations, relation => {
+        _.forEach(this.schema.getRelations(), relation => {
             this.overloaded_properties[relation.local_property] = relation
         })
     }
@@ -30,7 +30,7 @@ class ModelHandler {
         }
 
         if (property === 'toJSON') {
-            return () => obj;
+            return () => obj
         }
 
         if (this.overloaded_properties[property]) {
@@ -76,7 +76,6 @@ class ModelHandler {
     }
 
     _getBelongsToOne(definition, obj) {
-        console.log('Belongs to one...')
         let localSearch = []
 
         if (definition.local_key instanceof Array) {
@@ -85,8 +84,6 @@ class ModelHandler {
             localSearch.push(definition.local_key)
         }
         const value = _.property(localSearch)(obj)
-
-        console.log('Belongs to one...', { localSearch, value })
 
         const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
         const repo = this.orm.getRepositoryByPath(definition.schema)
@@ -95,7 +92,6 @@ class ModelHandler {
     }
 
     _getBelongsToMany(definition, obj) {
-        console.log('Belongs to many...')
         let localSearch = []
 
         if (definition.local_key instanceof Array) {
@@ -105,11 +101,8 @@ class ModelHandler {
         }
         const value = _.property(localSearch)(obj)
 
-        console.log('Belongs to many...', { localSearch, value })
-
         const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
 
-        console.log('Belongs to many...', { foreignSearch, value })
         const repo = this.orm.getRepositoryByPath(definition.schema)
 
         return repo.getAllBy(foreignSearch, value)
@@ -117,7 +110,7 @@ class ModelHandler {
 
     _getHasMany(definition, obj) {
         const matches = []
-        _.forEach(obj[definition.local_property], relObj => {
+        _.forEach(obj[definition.local_property], _ => {
             const localSearch = (definition.local_key instanceof Array) ? definition.local_key : [definition.local_key]
 
             const value = _.property(localSearch)(obj)

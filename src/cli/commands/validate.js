@@ -4,7 +4,7 @@ const Ajv = require('ajv')
 const glob = require('glob')
 const path = require('path')
 const refResolver = require('json-schema-ref-parser')
-const ajv = new Ajv();
+const ajv = new Ajv()
 
 cli.parse(null, ['meta-schemas', 'schemas', 'data'])
 
@@ -12,10 +12,10 @@ cli.main((args, options) => {
     let hadError = false,
         schemaPath = null,
         schemas = null,
-        validator = null,
         root = null,
-        oldCwd = null,
-        schema = null
+        dataPath = null,
+        datas = null,
+        promises = null
 
     switch (cli.command) {
         case 'meta-schemas':
@@ -26,8 +26,8 @@ cli.main((args, options) => {
                 const schema = tools.loadYAML(schemaFile)
                 cli.info(`checking ${schemaFile}...`)
 
-                if (! ajv.validateSchema(schema)) {
-                    cli.error(`Error processing ${chemaFile}`)
+                if (!ajv.validateSchema(schema)) {
+                    cli.error(`Error processing ${schemaFile}`)
                     cli.error(tools.prettyJSON(ajv.errors))
                     hadError = true
                 }
@@ -43,18 +43,18 @@ cli.main((args, options) => {
             root = tools.root('meta-schemas')
 
             refResolver.dereference(`${root}/json-schema-orm.schema.yaml`).then(metaSchema => {
-//                console.log(tools.prettyJSON(metaSchema));
-//                schema.allOf.push({ $ref: 'http://json-schema.org/draft-07/schema' })
+                // console.log(tools.prettyJSON(metaSchema));
+                // schema.allOf.push({ $ref: 'http://json-schema.org/draft-07/schema' })
 
                 schemaPath = path.resolve(tools.root(options), 'schemas') + '/**.yaml'
-//                console.log(schemaPath)
+                // console.log(schemaPath)
                 schemas = glob.sync(schemaPath)
 
                 schemas.forEach(schemaFile => {
                     cli.info(`Loading ${schemaFile}...`)
                     const schema = tools.loadYAML(schemaFile)
                     cli.info(`Checking ${schemaFile}...`)
-                    if (! ajv.validate(metaSchema, schema)) {
+                    if (!ajv.validate(metaSchema, schema)) {
                         cli.error(`Error processing ${schemaFile}`)
                         cli.error(tools.prettyJSON(ajv.errors))
                         hadError = true
@@ -76,11 +76,11 @@ cli.main((args, options) => {
         case 'data':
             root = path.resolve(tools.root(options), 'schemas')
 
-            const dataPath = path.resolve(tools.root(options), 'data') + '/**/**.yaml'
-//            console.log(schemaPath)
-            const datas = glob.sync(dataPath)
+            dataPath = path.resolve(tools.root(options), 'data') + '/**/**.yaml'
+            // console.log(schemaPath)
+            datas = glob.sync(dataPath)
 
-            const promises = datas.map(dataFile => {
+            promises = datas.map(dataFile => {
                 const schemaFile = path.resolve(root, path.basename(dataFile).split('.').splice(-2, 1) + '.schema.yaml')
 
                 return refResolver.dereference(schemaFile).then(metaSchema => {
@@ -105,6 +105,5 @@ cli.main((args, options) => {
             })
 
             break
-
     }
 })

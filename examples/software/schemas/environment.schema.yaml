@@ -5,6 +5,3 @@ type: object
 properties:
   name:
     type: string
-  hosts:
-    type: array
-    items:
