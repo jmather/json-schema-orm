@@ -20,10 +20,6 @@ class Repository {
     }
 
     _buildIndexes() {
-        if (! this.schema.getPrimaryProperty()) {
-            throw new Error(`Repository ${this.name} does not have primary_property defined!`)
-        }
-
         const primaryKey = this.schema.getPrimaryProperty()
         this.primaryIndex = {
             type: 'primary',
@@ -56,11 +52,11 @@ class Repository {
     }
 
     getAll() {
-        return _.map(this.objects, this._wrap)
+        return _.map(this.objects, o => this._wrap(o))
     }
 
     add(obj) {
-        if (obj instanceof Proxy) {
+        if (obj.___handler___ && obj.___handler___ instanceof ModelHandler) {
             return null
         }
 

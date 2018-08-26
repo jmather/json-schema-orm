@@ -25,7 +25,7 @@ class ModelHandler {
      * @param {string} property
      */
     get(obj, property) {
-        if (property === '___proxy___') {
+        if (property === '___handler___') {
             return this
         }
 
@@ -58,15 +58,13 @@ class ModelHandler {
 
     _getHasOne(definition, obj) {
         let localSearch = []
-        if (definition.local_property) {
-            localSearch.push(definition.local_property)
-        }
 
         if (definition.local_key instanceof Array) {
-            localSearch = localSearch.concat(definition.local_key)
+            localSearch = definition.local_key
         } else {
-            localSearch.push(definition.local_key)
+            localSearch = [definition.local_key]
         }
+
         const value = _.property(localSearch)(obj)
 
         const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
@@ -109,19 +107,14 @@ class ModelHandler {
     }
 
     _getHasMany(definition, obj) {
-        const matches = []
-        _.forEach(obj[definition.local_property], _ => {
-            const localSearch = (definition.local_key instanceof Array) ? definition.local_key : [definition.local_key]
+        const localSearch = (definition.local_key instanceof Array) ? definition.local_key : [definition.local_key]
 
-            const value = _.property(localSearch)(obj)
+        const value = _.property(localSearch)(obj)
 
-            const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
-            const repo = this.orm.getRepositoryByPath(definition.schema)
+        const foreignSearch = (definition.foreign_key instanceof Array) ? definition.foreign_key : [definition.foreign_key]
+        const repo = this.orm.getRepositoryByPath(definition.schema)
 
-            matches.push(repo.getAllBy(foreignSearch, value)[0])
-        })
-
-        return matches
+        return repo.getAllBy(foreignSearch, value)[0]
     }
 }
 
