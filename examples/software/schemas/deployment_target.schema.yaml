@@ -6,17 +6,17 @@ orm:
       local_property: component
       local_key: component_name
       foreign_key: name
-      type: has_one
+      type: one
     - schema: server.schema.yaml
       local_property: server
       local_key: server_name
       foreign_key: name
-      type: has_one
+      type: one
     - schema: domain.schema.yaml
       local_property: domain
       local_key: domain_name
       foreign_key: name
-      type: has_one
+      type: one
 type: object
 properties:
   name:

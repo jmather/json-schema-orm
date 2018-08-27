@@ -42,24 +42,20 @@
                 "local_property": "parent_component",
                 "local_key": "parent_component_name",
                 "foreign_key": "name",
-                "type": "belongs_to_one"
+                "type": "one"
               },
               {
                 "schema": "component.schema.yaml",
                 "local_property": "child_component",
                 "local_key": "child_component_name",
                 "foreign_key": "name",
-                "type": "belongs_to_one"
+                "type": "one"
               }
             ],
             "primary_property": "name"
           },
           "type": "object",
           "properties": {
-            "name": {
-              "type": "expression",
-              "expression": "this.parent_component_name + '_' + this.child_component_name"
-            },
             "parent_component_name": {
               "type": "string"
             },
@@ -81,21 +77,21 @@
                 "local_property": "repository",
                 "local_key": "repository_name",
                 "foreign_key": "name",
-                "type": "has_one"
+                "type": "one"
               },
               {
                 "schema": "component_dependency.schema.yaml",
                 "local_property": "depends_on",
                 "local_key": "name",
                 "foreign_key": "parent_component_name",
-                "type": "has_many"
+                "type": "many"
               },
               {
                 "schema": "component_dependency.schema.yaml",
                 "local_property": "depended_on_by",
                 "local_key": "name",
                 "foreign_key": "child_component_name",
-                "type": "has_many"
+                "type": "many"
               }
             ],
             "primary_property": "name"
@@ -117,11 +113,8 @@
                     "schema": "component.schema.yaml",
                     "local_property": "components",
                     "local_key": "name",
-                    "foreign_key": [
-                      "repository",
-                      "name"
-                    ],
-                    "type": "belongs_to_many"
+                    "foreign_key": "repository_name",
+                    "type": "many"
                   }
                 ]
               },
@@ -173,23 +166,19 @@
                       "local_property": "parent_component",
                       "local_key": "parent_component_name",
                       "foreign_key": "name",
-                      "type": "belongs_to_one"
+                      "type": "one"
                     },
                     {
                       "schema": "component.schema.yaml",
                       "local_property": "child_component",
                       "local_key": "child_component_name",
                       "foreign_key": "name",
-                      "type": "belongs_to_one"
+                      "type": "one"
                     }
                   ]
                 },
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "expression",
-                    "expression": "this.parent_component_name + '_' + this.child_component_name"
-                  },
                   "parent_component_name": {
                     "type": "string"
                   },
@@ -223,21 +212,21 @@
                 "local_property": "component",
                 "local_key": "component_name",
                 "foreign_key": "name",
-                "type": "has_one"
+                "type": "one"
               },
               {
                 "schema": "server.schema.yaml",
                 "local_property": "server",
                 "local_key": "server_name",
                 "foreign_key": "name",
-                "type": "has_one"
+                "type": "one"
               },
               {
                 "schema": "domain.schema.yaml",
                 "local_property": "domain",
                 "local_key": "domain_name",
                 "foreign_key": "name",
-                "type": "has_one"
+                "type": "one"
               }
             ],
             "primary_property": "name"
@@ -347,11 +336,8 @@
                 "schema": "component.schema.yaml",
                 "local_property": "components",
                 "local_key": "name",
-                "foreign_key": [
-                  "repository",
-                  "name"
-                ],
-                "type": "belongs_to_many"
+                "foreign_key": "repository_name",
+                "type": "many"
               }
             ],
             "primary_property": "name"
@@ -429,21 +415,21 @@
                       "local_property": "component",
                       "local_key": "component_name",
                       "foreign_key": "name",
-                      "type": "has_one"
+                      "type": "one"
                     },
                     {
                       "schema": "server.schema.yaml",
                       "local_property": "server",
                       "local_key": "server_name",
                       "foreign_key": "name",
-                      "type": "has_one"
+                      "type": "one"
                     },
                     {
                       "schema": "domain.schema.yaml",
                       "local_property": "domain",
                       "local_key": "domain_name",
                       "foreign_key": "name",
-                      "type": "has_one"
+                      "type": "one"
                     }
                   ]
                 },

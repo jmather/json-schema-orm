@@ -77,24 +77,16 @@ class Repository {
             return null
         }
 
-        return new Proxy(this.primaryIndex.values[id], this.modelHandler)
+        return this._wrap(this.primaryIndex.values[id])
     }
 
-    getAllBy(property, value) {
-        const checkIndex = _.flatten(property).join('_')
-        if (this.indexes[checkIndex]) {
-            return this.getByIndex(checkIndex, value)
-        }
-
-        const matches = []
-        _.forEach(this.objects, object => {
-            const objValue = _.property(property)(object)
-            if (objValue === value) {
-                matches.push(new Proxy(object, this.modelHandler))
-            }
-        })
-
-        return matches
+    /**
+     *
+     * @param {Object} matchCriteria
+     * @returns {Object[]}
+     */
+    getAllBy(matchCriteria) {
+        return _.map(_.filter(this.objects, _.matcher(matchCriteria)), o => this._wrap(o))
     }
 
     getByIndex(indexName, value) {

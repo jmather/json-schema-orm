@@ -5,8 +5,8 @@ orm:
     - schema: component.schema.yaml
       local_property: components
       local_key: name
-      foreign_key: [ repository, name ]
-      type: belongs_to_many
+      foreign_key: repository_name
+      type: many
 type: object
 properties:
   name:

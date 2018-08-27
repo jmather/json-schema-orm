@@ -5,7 +5,13 @@
   "main": "bin/dorm.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint src bin || echo"
+    "coverage": "jest --config jest-coverage.config.js || echo ''",
+    "lint": "eslint src bin || echo",
+    "bundle-examples": "node bin/cli.js -p examples/software bundle examples/software/bundle/schemas.json",
+    "validate-meta-schemas": "node bin/cli.js -p examples/software validate meta-schemas",
+    "validate-examples-schemas": "node bin/cli.js -p examples/software validate schemas",
+    "validate-examples-data": "node bin/cli.js -p examples/software validate data",
+    "validate-examples": "npm run validate-meta-schemas && npm run validate-examples-schemas && npm run validate-examples-data"
   },
   "author": "",
   "license": "ISC",

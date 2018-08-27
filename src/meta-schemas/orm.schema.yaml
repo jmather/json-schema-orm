@@ -34,7 +34,7 @@ allOf:
                         type: string
                 type:
                   type: string
-                  enum: [ has_many, has_one, belongs_to_one, belongs_to_many ]
+                  enum: [ one, many, many_to_many ]
               required: [ schema, local_property, local_key, foreign_key, type ]
         required: [ singular, plural ]
         additionalProperties: false
