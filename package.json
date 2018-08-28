@@ -4,10 +4,10 @@
   "description": "",
   "main": "bin/dorm.js",
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --config jest-coverage.config.js || echo ''",
+    "test": "node bin/refresh-examples.js && jest",
+    "coverage": "npm test -- --config jest-coverage.config.js || echo ''",
     "lint": "eslint src bin || echo",
-    "bundle-examples": "node bin/cli.js -p examples/software bundle examples/software/bundle/schemas.json",
+    "bundle-examples": "npm run validate-examples && node bin/cli.js -p examples/software bundle examples/software/bundle/schemas.json",
     "validate-meta-schemas": "node bin/cli.js -p examples/software validate meta-schemas",
     "validate-examples-schemas": "node bin/cli.js -p examples/software validate schemas",
     "validate-examples-data": "node bin/cli.js -p examples/software validate data",
@@ -18,9 +18,11 @@
   "dependencies": {
     "ajv": "^6.5.2",
     "cli": "^1.0.1",
+    "debug": "^3.1.0",
     "glob": "^7.1.2",
     "js-yaml": "^3.12.0",
     "json-schema-ref-parser": "^5.1.2",
+    "supports-color": "^5.5.0",
     "underscore": "^1.9.1"
   },
   "devDependencies": {

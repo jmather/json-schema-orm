@@ -24,4 +24,13 @@ describe('ModelHandler', () => {
     it('returns the model handler', () => {
         expect(model.___handler___ instanceof JSORM.ModelHandler).toBe(true)
     })
+
+    it('component_dependency has records', () => {
+        const repo = orm.getRepository('component_dependency')
+        expect(repo.getAll().length).toBeGreaterThan(0)
+    })
+
+    it.only('Core API has a child component', () => {
+        expect(model.child_components.length).toBe(1)
+    })
 })

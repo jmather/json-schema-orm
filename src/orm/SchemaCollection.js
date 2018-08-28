@@ -29,7 +29,7 @@ class SchemaCollection {
             throw new Error(`${name} is not defined.`)
         }
 
-        return new Schema(this.schemaCollection[name].schema)
+        return new Schema(name, this.schemaCollection[name].schema)
     }
 
     /**

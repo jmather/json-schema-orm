@@ -83,15 +83,45 @@
                 "schema": "component_dependency.schema.yaml",
                 "local_property": "depends_on",
                 "local_key": "name",
-                "foreign_key": "parent_component_name",
+                "foreign_key": "child_component_name",
                 "type": "many"
               },
               {
                 "schema": "component_dependency.schema.yaml",
                 "local_property": "depended_on_by",
                 "local_key": "name",
-                "foreign_key": "child_component_name",
+                "foreign_key": "parent_component_name",
                 "type": "many"
+              },
+              {
+                "schema": "component_dependency.schema.yaml",
+                "local_property": "child_components",
+                "local_key": "name",
+                "foreign_key": "parent_component_name",
+                "type": "many",
+                "joins": [
+                  {
+                    "schema": "component.schema.yaml",
+                    "local_key": "child_component_name",
+                    "foreign_key": "name",
+                    "type": "one"
+                  }
+                ]
+              },
+              {
+                "schema": "component_dependency.schema.yaml",
+                "local_property": "parent_components",
+                "local_key": "name",
+                "foreign_key": "child_component_name",
+                "type": "many",
+                "joins": [
+                  {
+                    "schema": "component.schema.yaml",
+                    "local_key": "parent_component_name",
+                    "foreign_key": "name",
+                    "type": "one"
+                  }
+                ]
               }
             ],
             "primary_property": "name"

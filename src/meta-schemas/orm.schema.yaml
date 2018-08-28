@@ -14,28 +14,29 @@ allOf:
           relations:
             type: array
             items:
-              type: object
-              properties:
-                schema:
-                  type: string
-                local_property:
-                  type: string
-                local_key:
-                  oneOf:
-                    - type: string
-                    - type: array
+              allOf:
+                - $ref: "#/definitions/base_relation"
+                - type: object
+                  properties:
+                    joins:
                       items:
-                        type: string
-                foreign_key:
-                  oneOf:
-                    - type: string
-                    - type: array
-                      items:
-                        type: string
-                type:
-                  type: string
-                  enum: [ one, many, many_to_many ]
-              required: [ schema, local_property, local_key, foreign_key, type ]
+                        $ref: "#/definitions/base_relation"
         required: [ singular, plural ]
         additionalProperties: false
     required: [ orm ]
+definitions:
+  base_relation:
+    type: object
+    properties:
+      schema:
+        type: string
+      local_property:
+        type: string
+      local_key:
+        type: string
+      foreign_key:
+        type: string
+      type:
+        type: string
+        enum: [ one, many ]
+

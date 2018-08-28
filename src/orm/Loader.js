@@ -34,14 +34,6 @@ class Loader {
             repo.add(data)
         })
     }
-
-    _loadDataRelations() {
-        // _.forEach(this.orm.getRepositories(), repo => {
-        //     _.forEach(repo.getAll(), obj => {
-        //
-        //     })
-        // })
-    }
 }
 
 module.exports = Loader

@@ -1,4 +1,4 @@
 name: Core UI
 repository_name: Core Project
 depends_on:
-  - child_component_name: Core API
+  - parent_component_name: Core API

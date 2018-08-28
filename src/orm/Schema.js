@@ -1,10 +1,20 @@
 class Schema {
     /**
      *
-     * @param {{ orm: Object, properties: Object }} schema
+     * @param {string} name
+     * @param {{ orm: { singular: string, plural: string, primary_property: string }}} schema
      */
-    constructor(schema) {
+    constructor(name, schema) {
+        this.name = name
         this.schema = schema
+    }
+
+    /**
+     *
+     * @returns {string}
+     */
+    getName() {
+        return this.name
     }
 
     /**
@@ -15,6 +25,10 @@ class Schema {
         return this.schema.orm.relations || []
     }
 
+    /**
+     *
+     * @returns {string}
+     */
     getPrimaryProperty() {
         return this.schema.orm.primary_property
     }
