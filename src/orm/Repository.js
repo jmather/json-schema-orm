@@ -1,5 +1,4 @@
 const _ = require('underscore')
-const ModelHandler = require('./ModelHandler')
 const debug = require('debug')
 
 class Repository {
@@ -15,7 +14,7 @@ class Repository {
         this.orm = orm
         this.objects = []
         this.indexes = {}
-        this.modelHandler = new ModelHandler(this.schema, this.orm)
+        this.modelHandler = new orm.ModelHandler(this.schema, this.orm)
         this.relationProperties = {}
 
         this._buildMetaData()

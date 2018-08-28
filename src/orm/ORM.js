@@ -1,5 +1,4 @@
 const _ = require('underscore')
-const Repository = require('./Repository')
 
 class ORM {
     /**
@@ -16,7 +15,7 @@ class ORM {
     _buildRepositories() {
         this.schemaCollection.getSchemaNames().forEach(schemaName => {
             const schema = this.schemaCollection.getByName(schemaName)
-            this.repositories[schemaName] = new Repository(schemaName, schema, this)
+            this.repositories[schemaName] = new this.Repository(schemaName, schema, this)
         })
     }
 
@@ -38,5 +37,8 @@ class ORM {
         return this.getRepository(schemaName)
     }
 }
+
+ORM.prototype.Repository = require('./Repository')
+ORM.prototype.ModelHandler = require('./ModelHandler')
 
 module.exports = ORM
