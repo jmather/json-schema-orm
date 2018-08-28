@@ -56,3 +56,4 @@ properties:
     items:
       $ref: component_dependency.schema.yaml
 required: [ name ]
+additionalProperties: false

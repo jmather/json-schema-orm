@@ -5,3 +5,4 @@ type: object
 properties:
   name:
     type: string
+additionalProperties: false

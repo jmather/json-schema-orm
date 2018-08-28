@@ -5,6 +5,7 @@ class ModelHandler {
         this.schema = schema
         this.orm = orm
         this.overloaded_properties = {}
+        this.expressions = {}
 
         this._buildGetters()
     }
@@ -16,6 +17,12 @@ class ModelHandler {
 
         _.forEach(this.schema.getRelations(), relation => {
             this.overloaded_properties[relation.local_property] = relation
+        })
+
+        _.forEach(this.schema.getProperties(), (propDef, propName) => {
+            if (propDef.expression) {
+                this.expressions[propName] = propDef
+            }
         })
     }
 
@@ -41,6 +48,12 @@ class ModelHandler {
             return () => obj
         }
 
+        if (this.expressions[property]) {
+            this._debug('get')('Returning expression: %s on: %o', this.expressions[property].expression, obj)
+
+            return this._expression(this.expressions[property].expression, obj)
+        }
+
         if (this.overloaded_properties[property]) {
             const definition = this.overloaded_properties[property]
 
@@ -50,6 +63,10 @@ class ModelHandler {
         }
 
         return obj[property]
+    }
+
+    _expression(js, context) {
+        return function() { return eval(js) }.call(context)
     }
 
     _getOne(definition, obj) {

@@ -112,14 +112,19 @@ class Repository {
         this.objects.push(model)
         this._index(model)
 
+        this._debug('add')('Now %s has objects: %o', this.name, this.objects)
+        this._debug('add')('Now %s has primary index: %o', this.name, this.primaryIndex)
+
         return obj
     }
 
     get(id) {
         if (! this.primaryIndex.values[id]) {
+            this._debug('get')('Looking for %s: null', id)
             return null
         }
 
+        this._debug('get')('Looking for %s: %o', id, this.primaryIndex.values[id])
         return this._wrap(this.primaryIndex.values[id])
     }
 

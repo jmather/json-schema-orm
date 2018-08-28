@@ -39,4 +39,4 @@ definitions:
       type:
         type: string
         enum: [ one, many ]
-
+    required: [ schema, local_key, foreign_key, type ]

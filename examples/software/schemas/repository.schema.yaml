@@ -28,3 +28,4 @@ properties:
         format: uri
     required: [ web ]
 required: [ name, type, checkout ]
+additionalProperties: false

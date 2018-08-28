@@ -14,3 +14,4 @@ properties:
     type: array
     items:
       $ref: deployment_target.schema.yaml
+additionalProperties: false

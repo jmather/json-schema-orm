@@ -19,7 +19,7 @@ _.forEach(examples, example => {
         return fs.statSync(file).ctime
     }))
 
-    if (refTime < maxSourceFile) {
+    if (refTime < maxSourceFile || process.argv.indexOf('--force') > -1) {
         const npm = exec.spawn('npm', [ 'run',  'bundle-examples' ])
 
         npm.stdout.on('data', function (data) {

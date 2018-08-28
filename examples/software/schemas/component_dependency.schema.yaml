@@ -14,7 +14,11 @@ orm:
       type: one
 type: object
 properties:
+  name:
+    type: string
+    expression: this.parent_component_name + " " + this.child_component_name
   parent_component_name:
     type: string
   child_component_name:
     type: string
+additionalProperties: false

@@ -3,9 +3,9 @@ const JSORM = init.JSORM
 const loader = init.loader
 const orm = init.orm
 
-describe('ModelHandler', () => {
-    let model = orm.getRepository('component').get('Core API')
+let model = orm.getRepository('component').get('Core API')
 
+describe('ModelHandler', () => {
     it('allows property access', () => {
         expect(model.name).toBe('Core API')
     })
@@ -30,7 +30,12 @@ describe('ModelHandler', () => {
         expect(repo.getAll().length).toBeGreaterThan(0)
     })
 
-    it.only('Core API has a child component', () => {
+    it('Core API has a child component', () => {
         expect(model.child_components.length).toBe(1)
+    })
+
+    it('handles expressions for realizies', () => {
+        const ref = orm.getRepository('component_dependency').getAll()[0]
+        expect(ref.name).toBe('Core API Core UI')
     })
 })

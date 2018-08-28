@@ -27,6 +27,9 @@ properties:
     type: string
   server_name:
     type: string
+  environment_name:
+    type: string
   path:
     type: string
     default: /
+additionalProperties: false

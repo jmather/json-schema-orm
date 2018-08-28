@@ -7,3 +7,4 @@ properties:
   url:
     type: string
     format: uri
+additionalProperties: false

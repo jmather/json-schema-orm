@@ -56,13 +56,18 @@
           },
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string",
+              "expression": "this.parent_component_name + \" \" + this.child_component_name"
+            },
             "parent_component_name": {
               "type": "string"
             },
             "child_component_name": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "component": {
@@ -182,7 +187,8 @@
                 "name",
                 "type",
                 "checkout"
-              ]
+              ],
+              "additionalProperties": false
             },
             "depends_on": {
               "type": "array",
@@ -209,13 +215,18 @@
                 },
                 "type": "object",
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "expression": "this.parent_component_name + \" \" + this.child_component_name"
+                  },
                   "parent_component_name": {
                     "type": "string"
                   },
                   "child_component_name": {
                     "type": "string"
                   }
-                }
+                },
+                "additionalProperties": false
               }
             },
             "depended_on_by": {
@@ -227,7 +238,8 @@
           },
           "required": [
             "name"
-          ]
+          ],
+          "additionalProperties": false
         }
       },
       "deployment_target": {
@@ -275,11 +287,15 @@
             "server_name": {
               "type": "string"
             },
+            "environment_name": {
+              "type": "string"
+            },
             "path": {
               "type": "string",
               "default": "/"
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "dns_zone": {
@@ -316,11 +332,12 @@
                   }
                 }
               }
-            },
-            "required": [
-              "domain_name"
-            ]
-          }
+            }
+          },
+          "required": [
+            "domain_name"
+          ],
+          "additionalProperties": false
         }
       },
       "domain": {
@@ -336,7 +353,8 @@
             "name": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "environment": {
@@ -352,7 +370,8 @@
             "name": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "repository": {
@@ -406,7 +425,8 @@
             "name",
             "type",
             "checkout"
-          ]
+          ],
+          "additionalProperties": false
         }
       },
       "server": {
@@ -477,14 +497,19 @@
                   "server_name": {
                     "type": "string"
                   },
+                  "environment_name": {
+                    "type": "string"
+                  },
                   "path": {
                     "type": "string",
                     "default": "/"
                   }
-                }
+                },
+                "additionalProperties": false
               }
             }
-          }
+          },
+          "additionalProperties": false
         }
       },
       "url": {
@@ -501,7 +526,8 @@
               "type": "string",
               "format": "uri"
             }
-          }
+          },
+          "additionalProperties": false
         }
       }
     }

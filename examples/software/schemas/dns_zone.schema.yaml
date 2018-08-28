@@ -17,4 +17,5 @@ properties:
           enum: [ a, cname, txt ]
         target:
           type: string
-  required: [ domain_name ]
+required: [ domain_name ]
+additionalProperties: false

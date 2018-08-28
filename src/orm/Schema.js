@@ -32,6 +32,14 @@ class Schema {
     getPrimaryProperty() {
         return this.schema.orm.primary_property
     }
+
+    /**
+     *
+     * @returns {Object}
+     */
+    getProperties() {
+        return this.schema.properties
+    }
 }
 
 module.exports = Schema
