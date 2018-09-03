@@ -1,4 +1,5 @@
 const _ = require('underscore')
+const debug = require('debug')
 
 class ModelHandler {
     constructor(schema, orm) {
@@ -27,7 +28,7 @@ class ModelHandler {
     }
 
     _debug(component) {
-        return require('debug')(`ModelHandler:${this.schema.getName()}:${component}`)
+        return debug(`ModelHandler:${this.schema.getName()}:${component}`)
     }
 
     /**
@@ -57,9 +58,7 @@ class ModelHandler {
         if (this.overloaded_properties[property]) {
             const definition = this.overloaded_properties[property]
 
-            if (definition.type === 'one' || definition.type === 'many') {
-                return this._get(definition, obj)
-            }
+            return this._get(definition, obj)
         }
 
         return obj[property]
@@ -69,40 +68,18 @@ class ModelHandler {
         return function() { return eval(js) }.call(context)
     }
 
-    _getOne(definition, obj) {
-        return this._getMany(definition, obj)[0]
-    }
-
-    _getMany(definition, obj) {
-        const repo = this.orm.getRepositoryByPath(definition.schema)
-
-        const search = {}
-        search[definition.foreign_key] = obj[definition.local_key]
-
-        this._debug('_getMany')('search: %o', search)
-        return repo.getAllBy(search)
-    }
-
     _get(definition, obj) {
-        this._debug('_get')('Getting first match tier: %o', definition)
-        let matchTier = this._getMany(definition, obj)
-
-        this._debug('_get')('First match tier: %o', matchTier)
-
-        if (matchTier.length === 0) {
-            return []
-        }
-
-        if (definition.type === 'one') {
-            matchTier = [matchTier[0]]
-        }
+        let matchTier = [obj]
+        this._debug('_get')('Processing definition: %o', definition)
 
         _.forEach(definition.joins, join => {
+            this._debug('_get')('Processing Join: %o', join)
             const foreignRepo = this.orm.getRepositoryByPath(join.schema)
 
             matchTier = _.map(matchTier, refObj => {
                 const search = {}
                 search[join.foreign_key] = refObj[join.local_key]
+                this._debug('_get')('Searching for: %o', search)
 
                 switch(join.type) {
                     case 'one':
@@ -121,7 +98,7 @@ class ModelHandler {
             this._debug('_get')('Next match tier: %o', matchTier)
         })
 
-        if (definition.type === 'one') {
+        if (_.all(definition.joins, j => j.type === 'one')) {
             return matchTier[0]
         }
 

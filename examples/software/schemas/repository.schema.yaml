@@ -2,11 +2,12 @@ orm:
   singular: Repository
   plural: Repositories
   relations:
-    - schema: component.schema.yaml
-      local_property: components
-      local_key: name
-      foreign_key: repository_name
-      type: many
+    - local_property: components
+      joins:
+        - schema: component.schema.yaml
+          local_key: name
+          foreign_key: repository_name
+          type: many
 type: object
 properties:
   name:

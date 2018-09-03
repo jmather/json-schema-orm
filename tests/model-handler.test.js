@@ -22,7 +22,7 @@ describe('ModelHandler', () => {
     })
 
     it('returns the model handler', () => {
-        expect(model.___handler___ instanceof JSORM.ModelHandler).toBe(true)
+        expect(model.___handler___ instanceof orm.ModelHandler).toBe(true)
     })
 
     it('component_dependency has records', () => {

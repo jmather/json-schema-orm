@@ -2,42 +2,44 @@ orm:
   singular: Component
   plural: Components
   relations:
-    - schema: repository.schema.yaml
-      local_property: repository
-      local_key: repository_name
-      foreign_key: name
-      type: one
-    - schema: component_dependency.schema.yaml
-      local_property: depends_on
-      local_key: name
-      foreign_key: child_component_name
-      type: many
-    - schema: component_dependency.schema.yaml
-      local_property: depended_on_by
-      local_key: name
-      foreign_key: parent_component_name
-      type: many
-    - schema: component_dependency.schema.yaml
-      local_property: child_components
-      local_key: name
-      foreign_key: parent_component_name
-      type: many
+    - local_property: repository
       joins:
+        - schema: repository.schema.yaml
+          local_key: repository_name
+          foreign_key: name
+          type: one
+    - local_property: depends_on
+      joins:
+        - schema: component_dependency.schema.yaml
+          local_key: name
+          foreign_key: child_component_name
+          type: many
+    - local_property: depended_on_by
+      joins:
+        - schema: component_dependency.schema.yaml
+          local_key: name
+          foreign_key: parent_component_name
+          type: many
+    - local_property: child_components
+      joins:
+        - schema: component_dependency.schema.yaml
+          local_key: name
+          foreign_key: parent_component_name
+          type: many
         - schema: component.schema.yaml
           local_key: child_component_name
           foreign_key: name
           type: one
-    - schema: component_dependency.schema.yaml
-      local_property: parent_components
-      local_key: name
-      foreign_key: child_component_name
-      type: many
+    - local_property: parent_components
       joins:
+        - schema: component_dependency.schema.yaml
+          local_key: name
+          foreign_key: child_component_name
+          type: many
         - schema: component.schema.yaml
           local_key: parent_component_name
           foreign_key: name
           type: one
-
 
 type: object
 properties:

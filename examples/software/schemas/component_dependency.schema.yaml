@@ -2,16 +2,18 @@ orm:
   singular: Component Dependency
   plural: Component Dependencies
   relations:
-    - schema: component.schema.yaml
-      local_property: parent_component
-      local_key: parent_component_name
-      foreign_key: name
-      type: one
-    - schema: component.schema.yaml
-      local_property: child_component
-      local_key: child_component_name
-      foreign_key: name
-      type: one
+    - local_property: parent_component
+      joins:
+        - schema: component.schema.yaml
+          local_key: parent_component_name
+          foreign_key: name
+          type: one
+    - local_property: child_component
+      joins:
+        - schema: component.schema.yaml
+          local_key: child_component_name
+          foreign_key: name
+          type: one
 type: object
 properties:
   name:

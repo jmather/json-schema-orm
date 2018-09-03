@@ -80,7 +80,7 @@ class Repository {
     }
 
     add(obj) {
-        if (obj.___handler___ && obj.___handler___ instanceof ModelHandler) {
+        if (obj.___handler___ && obj.___handler___ instanceof this.orm.ModelHandler) {
             return null
         }
 
@@ -91,14 +91,14 @@ class Repository {
             if (this.relationProperties[propName]) {
                 this._debug('add')('Found relation items %s in %s', propName, obj[this.schema.getPrimaryProperty()])
                 const relation = this.relationProperties[propName]
-                const foreignRepo = this.orm.getRepositoryByPath(relation.schema)
+                const foreignRepo = this.orm.getRepositoryByPath(relation.joins[0].schema)
 
                 if (propValue instanceof Array) {
                     this._debug('add')('Adding sub relation %s: %o', propName, propValue)
                     _.forEach(propValue, propValueInstance => {
                         const subObj = _.clone(propValueInstance)
 
-                        subObj[relation.foreign_key] = obj[relation.local_key]
+                        subObj[relation.joins[0].foreign_key] = obj[relation.joins[0].local_key]
                         this._debug('add')('Adding %s object: %o', foreignRepo.getName(), subObj)
                         foreignRepo.add(subObj)
                     })

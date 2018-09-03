@@ -2,21 +2,24 @@ orm:
   singular: Deployment Target
   plural: Deployment Targets
   relations:
-    - schema: component.schema.yaml
-      local_property: component
-      local_key: component_name
-      foreign_key: name
-      type: one
-    - schema: server.schema.yaml
-      local_property: server
-      local_key: server_name
-      foreign_key: name
-      type: one
-    - schema: domain.schema.yaml
-      local_property: domain
-      local_key: domain_name
-      foreign_key: name
-      type: one
+    - local_property: component
+      joins:
+        - schema: component.schema.yaml
+          local_key: component_name
+          foreign_key: name
+          type: one
+    - local_property: server
+      joins:
+        - schema: server.schema.yaml
+          local_key: server_name
+          foreign_key: name
+          type: one
+    - local_property: domain
+      joins:
+        - schema: domain.schema.yaml
+          local_key: domain_name
+          foreign_key: name
+          type: one
 type: object
 properties:
   name:
