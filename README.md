@@ -115,3 +115,21 @@ loader.loadData(dataPath)
 // returns: { name: 'Core API', reposiotry_name: 'Core Project' }
 console.log(orm.getRepository('component').get('Core API'))
 ``` 
+
+# CLI Commands
+
+## Validate
+
+Options: meta-schema, schemas, data
+
+Example: `./bin/cli.js -p examples/software validate schemas`
+
+## Bundle
+
+Example: `./bin/cli.js -p examples/software bundle examples/software/bundle/schemas.json`
+
+## Diagram
+
+Example: `./bin/cli.js -p examples/software diagram && open test.dot`
+
+![Software Diagram Example](examples/software/diagrams/model.png)

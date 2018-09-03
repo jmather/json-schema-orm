@@ -20,6 +20,12 @@ orm:
           local_key: domain_name
           foreign_key: name
           type: one
+    - local_property: environment
+      joins:
+        - schema: environment.schema.yaml
+          local_key: environment_name
+          foreign_key: name
+          type: one
 type: object
 properties:
   name:

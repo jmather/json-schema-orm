@@ -19,6 +19,22 @@ class Schema {
 
     /**
      *
+     * @returns {string}
+     */
+    getSingular() {
+        return this.schema.orm.singular
+    }
+
+    /**
+     *
+     * @returns {string}
+     */
+    getPlural() {
+        return this.schema.orm.plural
+    }
+
+    /**
+     *
      * @returns Array{{ schema: string, local_property: string, local_key: string, foreign_key: string, type: string }}
      */
     getRelations() {
