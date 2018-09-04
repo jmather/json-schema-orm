@@ -1,9 +1,8 @@
 const glob = require('glob')
-const path = require('path')
 // const _ = require('underscore')
-const tools = require('../tools')
-const ORM = require('./ORM')
-const SchemaCollection = require('./SchemaCollection')
+const tools = require('./tools')
+const ORM = require('./orm/ORM')
+const SchemaCollection = require('./orm/SchemaCollection')
 
 class Loader {
     constructor() {
@@ -11,10 +10,10 @@ class Loader {
 
     /**
      *
-     * @param {string} schemasBundleFile
+     * @param {string|Object} schemasBundleFile
      */
     loadSchemas(schemasBundleFile) {
-        this.schemas = require(path.resolve(schemasBundleFile)).definitions.schemas
+        this.schemas = require(schemasBundleFile).definitions.schemas
         const schema = new SchemaCollection(this.schemas)
         this.orm = new ORM(schema)
 
@@ -28,7 +27,7 @@ class Loader {
     loadData(dataPath) {
         const dataFiles = glob.sync(dataPath + '/**/**.yaml')
         dataFiles.forEach(dataFile => {
-            const schemaName = path.basename(dataFile).split('.').splice(-2, 1)
+            const schemaName = dataFile.split('/').pop().split('.').splice(-2, 1)
             const repo = this.orm.getRepository(schemaName)
             const data = tools.loadYAML(dataFile)
             repo.add(data)

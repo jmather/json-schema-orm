@@ -99,7 +99,7 @@ additionalProperties: false
 
 ```
 const path = require('path')
-const JS_ORM = require('../../../src/orm/index')
+const JS_ORM = require('../../../index')
 const _ = require('underscore')
 
 const projectSchemasFile = path.resolve(__dirname, '..', 'bundle/schemas.json')

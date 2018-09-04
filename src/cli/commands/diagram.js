@@ -13,7 +13,7 @@ cli.main((args, options) => {
         process.exit(1)
     }
 
-    const JS_ORM = require('../../orm/index')
+    const JS_ORM = require('../../../index')
     const _ = require('underscore')
 
     const projectSchemasFile = path.resolve(options.project, 'bundle/schemas.json')
