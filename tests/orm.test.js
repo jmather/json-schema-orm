@@ -8,6 +8,6 @@ describe('ORM', () => {
     })
 
     it('returns defined repositories', () => {
-        expect(orm.getRepositories().length).toBe(9)
+        expect(orm.getRepositories().length).toBe(10)
     })
 })

@@ -1,5 +1,5 @@
 const path = require('path')
-const JSORM = require(path.resolve(__dirname, '../../src/orm/index'))
+const JSORM = require(path.resolve(__dirname, '../../index'))
 
 const projectPath = '../../examples/software'
 const projectSchemasFile = path.resolve(__dirname, projectPath, 'bundle/schemas.json')
@@ -11,7 +11,7 @@ const orm = loader.loadSchemas(projectSchemasFile)
 loader.loadData(dataPath)
 
 module.exports = {
-    JSORM,
+    JSORM: JSORM.ORM,
     orm,
     loader
 }
