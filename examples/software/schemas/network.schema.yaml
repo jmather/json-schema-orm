@@ -1,0 +1,14 @@
+orm:
+  singular: Network
+  plural: Networks
+  relations:
+    - local_property: interfaces
+      joins:
+        - schema: network_interface.schema.yaml
+          local_key: name
+          foreign_key: network_name
+          type: many
+type: object
+properties:
+  name:
+    type: string

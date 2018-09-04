@@ -8,6 +8,11 @@ const convertDot = require('../../visualization/convert-dot')
 
 
 cli.main((args, options) => {
+    if (! args[0]) {
+        cli.error('The path of the png file to output must be given as an argument!')
+        process.exit(1)
+    }
+
     const JS_ORM = require('../../orm/index')
     const _ = require('underscore')
 
@@ -33,12 +38,13 @@ cli.main((args, options) => {
 
     const dotString = dotTemplate.replace('__SCHEMAS__', models).replace('__RELATIONS__', relations)
 
-    console.log(dotString)
+    const pngPath = args[0]
+    const dotPath = pngPath.replace(/\.png$/, '.dot')
 
-    fs.writeFileSync('test.dot', dotString)
+    fs.writeFileSync(dotPath, dotString)
 
     convertDot.dotToPng(dotString).then(png => {
-        fs.writeFileSync('test.png', png)
+        fs.writeFileSync(pngPath, png)
     })
 })
 

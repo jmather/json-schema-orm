@@ -2,3 +2,8 @@ name: Core UI
 repository_name: Core Project
 depends_on:
   - parent_component_name: Core API
+environments:
+  - environment_name: Production
+    url: https://www.core.com
+  - environment_name: Production
+    url: https://staging.core.com/

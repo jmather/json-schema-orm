@@ -1,8 +1,27 @@
 orm:
   singular: Domain
   plural: Domains
+  relations:
+    - local_property: targets
+      joins:
+        - schema: domain_target.schema.yaml
+          local_key: name
+          foreign_key: domain_name
+          type: many
 type: object
 properties:
   name:
     type: string
+  targets:
+    type: array
+    items:
+      type: object
+      properties:
+        target:
+          oneOf:
+           - type: string
+             pattern: ^[1-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[1-9][0-9]?[0-9]?$
+           - type: string
+             pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$
+required: [ name ]
 additionalProperties: false

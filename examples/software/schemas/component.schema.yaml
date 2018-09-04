@@ -40,7 +40,12 @@ orm:
           local_key: parent_component_name
           foreign_key: name
           type: one
-
+    - local_property: environments
+      joins:
+        - schema: environment_component.schema.yaml
+          local_key: name
+          foreign_key: component_name
+          type: many
 type: object
 properties:
   name:
@@ -57,5 +62,19 @@ properties:
     type: array
     items:
       $ref: component_dependency.schema.yaml
+  environments:
+    type: array
+    items:
+      type: object
+      properties:
+        environment_name:
+          type: string
+        url:
+          type: string
+          format: uri
+        server_name:
+          type: string
+      required: [ environment_name ]
+      additionalProperties: false
 required: [ name ]
 additionalProperties: false

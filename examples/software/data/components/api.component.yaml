@@ -1,3 +1,7 @@
 name: Core API
 repository_name: Core Project
-
+environments:
+  - environment_name: Production
+    url: https://api.core.com/
+  - environment_name: Staging
+    url: https://staging.api.core.com/

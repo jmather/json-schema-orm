@@ -1,17 +1,53 @@
 orm:
   singular: Server
   plural: Servers
+  relations:
+    - local_property: network_interfaces
+      joins:
+        - schema: network_interface.schema.yaml
+          local_key: name
+          foreign_key: server_name
+          type: many
+    - local_property: domains
+      joins:
+        - schema: network_interface.schema.yaml
+          local_key: name
+          foreign_key: server_name
+          type: many
+        - schema: domain_target.schema.yaml
+          local_key: ip
+          foreign_key: target
+          type: many
+        - schema: domain.schema.yaml
+          local_key: domain_name
+          foreign_key: name
+          type: many
+    - local_property: components
+      joins:
+        - schema: environment_component.schema.yaml
+          local_key: name
+          foreign_key: server_name
+          type: many
 type: object
 properties:
   name:
+    type: string
+  hostname:
     type: string
   description:
     type: string
   type:
     type: string
-    enum: [ phycisal, virtual, cluster ]
-  serves:
+    enum: [ physical, virtual, cluster ]
+  network_interfaces:
     type: array
     items:
-      $ref: deployment_target.schema.yaml
+      type: object
+      properties:
+        network_name:
+          type: string
+        ip:
+          type: string
+          pattern: ^[1-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[1-9][0-9]?[0-9]?$
+required: [ name ]
 additionalProperties: false

@@ -1,0 +1,39 @@
+orm:
+  singular: Domain Target
+  plural: Domain Targets
+  relations:
+    - local_property: domain
+      joins:
+        - schema: domain.schema.yaml
+          local_key: target
+          foreign_key: name
+          type: one
+    - local_property: network_interface
+      joins:
+        - schema: network_interface.schema.yaml
+          local_key: target
+          foreign_key: ip
+          type: one
+    - local_property: server
+      joins:
+        - schema: network_interface.schema.yaml
+          local_key: target
+          foreign_key: ip
+          type: one
+        - schema: server.schema.yaml
+          local_key: server_name
+          foreign_key: name
+          type: one
+type: object
+properties:
+  name:
+    type: string
+    expression: this.domain_name + '(' + this.target + ')'
+  domain_name:
+    type: string
+  target:
+    oneOf:
+      - type: string
+        pattern: ^[1-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[1-9][0-9]?[0-9]?$
+      - type: string
+        pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$

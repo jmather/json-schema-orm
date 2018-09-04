@@ -1,6 +1,23 @@
 orm:
   singular: Environment
   plural: Environments
+  relations:
+    - local_property: components
+      joins:
+        - schema: environment_component.schema.yaml
+          local_key: name
+          foreign_key: environment_name
+          type: many
+    - local_property: servers
+      joins:
+        - schema: environment_component.schema.yaml
+          local_key: name
+          foreign_key: environment_name
+          type: many
+        - schema: server.schema.yaml
+          local_key: server_name
+          foreign_key: name
+          type: one
 type: object
 properties:
   name:

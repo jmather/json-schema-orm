@@ -1,0 +1,45 @@
+ digraph {
+node[shape=record,style=filled,fillcolor=gray95]
+pad=0.2;
+ranksep=1
+edge[arrowtail=empty]
+
+
+
+component_dependency[label = "{Component Dependency| + child_component (Component) \l + child_component_name (string) \l + name (string) \l + parent_component (Component) \l + parent_component_name (string)\l}"]
+component[label = "{Component| + child_components (Component[]) \l + depended_on_by (Component Dependency[]) \l + depends_on (Component Dependency[]) \l + environments (Environment Component[]) \l + name (string) \l + parent_components (Component[]) \l + repository (Repository) \l + repository_name (string)\l}"]
+domain_target[label = "{Domain Target| + domain (Domain) \l + domain_name (string) \l + name (string) \l + network_interface (Network Interface) \l + server (Server) \l + target (undefined)\l}"]
+domain[label = "{Domain| + name (string) \l + targets (Domain Target[])\l}"]
+environment_component[label = "{Environment Component| + component (Component) \l + domain (Domain) \l + environment (Environment) \l + server (Server)\l}"]
+environment[label = "{Environment| + components (Environment Component[]) \l + name (string) \l + servers (Server[])\l}"]
+network_interface[label = "{Network Interface| + ip (string) \l + name (string) \l + network (Network) \l + network_name (string) \l + server (Server[]) \l + server_name (string)\l}"]
+network[label = "{Network| + interfaces (Network Interface[]) \l + name (string)\l}"]
+repository[label = "{Repository| + checkout (object) \l + components (Component[]) \l + name (string) \l + type (string)\l}"]
+server[label = "{Server| + components (Environment Component[]) \l + description (string) \l + domains (Domain[]) \l + hostname (string) \l + name (string) \l + network_interfaces (Network Interface[]) \l + type (string)\l}"]
+
+component_dependency -> component [label="child_component   "]
+component_dependency -> component [label="parent_component   "]
+component -> component [label="child_components   "]
+component -> component_dependency [label="depended_on_by   "]
+component -> component_dependency [label="depends_on   "]
+component -> environment_component [label="environments   "]
+component -> component [label="parent_components   "]
+component -> repository [label="repository   "]
+domain_target -> domain [label="domain   "]
+domain_target -> network_interface [label="network_interface   "]
+domain_target -> server [label="server   "]
+domain -> domain_target [label="targets   "]
+environment_component -> component [label="component   "]
+environment_component -> domain [label="domain   "]
+environment_component -> environment [label="environment   "]
+environment_component -> server [label="server   "]
+environment -> environment_component [label="components   "]
+environment -> server [label="servers   "]
+network_interface -> network [label="network   "]
+network_interface -> server [label="server   "]
+network -> network_interface [label="interfaces   "]
+repository -> component [label="components   "]
+server -> environment_component [label="components   "]
+server -> domain [label="domains   "]
+server -> network_interface [label="network_interfaces   "]
+}

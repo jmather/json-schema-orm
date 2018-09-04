@@ -1,0 +1,27 @@
+orm:
+  singular: Network Interface
+  plural: Network Interfaces
+  relations:
+    - local_property: server
+      joins:
+        - schema: server.schema.yaml
+          local_key: server_name
+          foreign_key: name
+          type: many
+    - local_property: network
+      joins:
+        - schema: network.schema.yaml
+          local_key: network_name
+          foreign_key: name
+          type: one
+properties:
+  name:
+    type: string
+    expression: this.server_name + ' ' + this.network_name + ' ' + this.ip
+  network_name:
+    type: string
+  server_name:
+    type: string
+  ip:
+    type: string
+    pattern: ^[1-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[1-9][0-9]?[0-9]?$

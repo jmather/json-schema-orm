@@ -12,6 +12,7 @@ class ModelHandler {
     }
 
     _buildGetters() {
+        this._debug('_buildGetters')('Building...')
         if (! this.schema.getRelations()) {
             return
         }
