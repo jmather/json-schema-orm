@@ -1,11 +1,13 @@
 const Viz = require('viz.js')
-const { Module, render } = require(__dirname + '/../../node_modules/viz.js/full.render.js')
+const path = require('path')
+const viz_path = path.dirname(require.resolve('viz.js'))
+const { Module, render } = require(viz_path + '/full.render.js')
 const Worker = require('tiny-worker')
 const svgToImg = require('svg-to-img')
 
 const convertDot = {
     dotToSvg: (dot) => {
-        let worker = new Worker(__dirname + '/../../node_modules/viz.js/full.render.js')
+        let worker = new Worker(viz_path + '/full.render.js')
         let viz = new Viz({worker});
 
         return viz.renderString(dot)
