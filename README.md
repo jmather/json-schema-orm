@@ -133,3 +133,15 @@ Example: `./bin/cli.js -p examples/software bundle examples/software/bundle/sche
 Example: `./bin/cli.js -p examples/software diagram && open test.png`
 
 ![Software Diagram Example](examples/software/diagrams/model.png)
+
+# Browser
+
+```
+git clone https://github.com/jmather/json-schema-orm
+cd json-schema-orm
+cd browser
+npm install && npm install -g gulp
+gulp
+```
+
+![Browser Screenshot](browser/screen-shot.png)
