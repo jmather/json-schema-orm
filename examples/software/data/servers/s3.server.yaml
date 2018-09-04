@@ -1,2 +1,5 @@
 name: Core UI S3 Bucket
 description: S3 bucket that hosts the public website
+network_interfaces:
+  - network_name: Amazon US West 2
+    interface: s3-bucket-name.s3.us-west-2.amazonaws.com

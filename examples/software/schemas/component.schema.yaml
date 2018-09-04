@@ -57,11 +57,17 @@ properties:
   depends_on:
     type: array
     items:
-      $ref: component_dependency.schema.yaml
+      type: object
+      properties:
+        parent_component_name:
+          type: string
   depended_on_by:
     type: array
     items:
-      $ref: component_dependency.schema.yaml
+      type: object
+      properties:
+        child_component_name:
+          type: string
   environments:
     type: array
     items:

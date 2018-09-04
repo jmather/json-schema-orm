@@ -1,6 +1,6 @@
-name: Heroku Production
+name: Heroku Staging
 description: 3 node heroku environment
 type: cluster
 network_interfaces:
 - network_name: Heroku
-  interface: my-production-app.herokuapps.com
+  interface: my-staging-app.herokuapps.com

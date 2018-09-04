@@ -23,4 +23,5 @@ properties:
     type: string
   child_component_name:
     type: string
+required: [ parent_component_name, child_component_name ]
 additionalProperties: false

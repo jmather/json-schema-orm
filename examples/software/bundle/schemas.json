@@ -78,6 +78,10 @@
               "type": "string"
             }
           },
+          "required": [
+            "parent_component_name",
+            "child_component_name"
+          ],
           "additionalProperties": false
         }
       },
@@ -235,54 +239,23 @@
             "depends_on": {
               "type": "array",
               "items": {
-                "orm": {
-                  "singular": "Component Dependency",
-                  "plural": "Component Dependencies",
-                  "relations": [
-                    {
-                      "local_property": "parent_component",
-                      "joins": [
-                        {
-                          "schema": "component.schema.yaml",
-                          "local_key": "parent_component_name",
-                          "foreign_key": "name",
-                          "type": "one"
-                        }
-                      ]
-                    },
-                    {
-                      "local_property": "child_component",
-                      "joins": [
-                        {
-                          "schema": "component.schema.yaml",
-                          "local_key": "child_component_name",
-                          "foreign_key": "name",
-                          "type": "one"
-                        }
-                      ]
-                    }
-                  ]
-                },
                 "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string",
-                    "expression": "this.parent_component_name + \" \" + this.child_component_name"
-                  },
                   "parent_component_name": {
                     "type": "string"
-                  },
-                  "child_component_name": {
-                    "type": "string"
                   }
-                },
-                "additionalProperties": false
+                }
               }
             },
             "depended_on_by": {
               "type": "array",
               "items": {
-                "$ref": "#/properties/depends_on/items"
+                "type": "object",
+                "properties": {
+                  "child_component_name": {
+                    "type": "string"
+                  }
+                }
               }
             },
             "environments": {
@@ -338,7 +311,7 @@
                   {
                     "schema": "network_interface.schema.yaml",
                     "local_key": "target",
-                    "foreign_key": "ip",
+                    "foreign_key": "interface",
                     "type": "one"
                   }
                 ]
@@ -349,7 +322,7 @@
                   {
                     "schema": "network_interface.schema.yaml",
                     "local_key": "target",
-                    "foreign_key": "ip",
+                    "foreign_key": "interface",
                     "type": "one"
                   },
                   {
@@ -384,7 +357,12 @@
                 }
               ]
             }
-          }
+          },
+          "required": [
+            "domain_name",
+            "target"
+          ],
+          "additionalProperties": false
         }
       },
       "domain": {
@@ -426,11 +404,14 @@
                       },
                       {
                         "type": "string",
-                        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
+                        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-.]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
                       }
                     ]
                   }
-                }
+                },
+                "required": [
+                  "target"
+                ]
               }
             }
           },
@@ -495,30 +476,31 @@
             "primary_property": "name"
           },
           "type": "object",
-          "properties": null,
-          "  name": {
-            "type": "string",
-            "expression": "this.environment_name + ' ' + this.component_name + ' ' + this.deployment_target"
-          },
-          "  environment_name": {
-            "type": "string"
-          },
-          "  component_name": {
-            "type": "string"
-          },
-          "  url": {
-            "type": "string"
-          },
-          "  domain_name": {
-            "type": "string",
-            "expression": "this.url.split('://')[1].split('/')[0].split(':')[0]"
-          },
-          "  server_name": {
-            "type": "string"
-          },
-          "  deployment_target": {
-            "type": "string",
-            "expression": "this.url || this.server_name"
+          "properties": {
+            "name": {
+              "type": "string",
+              "expression": "this.environment_name + ' ' + this.component_name + ' ' + this.deployment_target"
+            },
+            "environment_name": {
+              "type": "string"
+            },
+            "component_name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "domain_name": {
+              "type": "string",
+              "expression": "this.url.split('://')[1].split('/')[0].split(':')[0]"
+            },
+            "server_name": {
+              "type": "string"
+            },
+            "deployment_target": {
+              "type": "string",
+              "expression": "this.url || this.server_name"
+            }
           }
         }
       },
@@ -566,6 +548,9 @@
               "type": "string"
             }
           },
+          "required": [
+            "name"
+          ],
           "additionalProperties": false
         }
       },
@@ -612,11 +597,25 @@
             "server_name": {
               "type": "string"
             },
-            "ip": {
-              "type": "string",
-              "pattern": "^[1-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[1-9][0-9]?[0-9]?$"
+            "interface": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[1-9][0-9]?[0-9]?$"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
+                }
+              ]
             }
-          }
+          },
+          "required": [
+            "network_name",
+            "server_name",
+            "ip"
+          ],
+          "additionalProperties": false
         }
       },
       "network": {
@@ -645,7 +644,11 @@
             "name": {
               "type": "string"
             }
-          }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false
         }
       },
       "repository": {
@@ -736,7 +739,7 @@
                   },
                   {
                     "schema": "domain_target.schema.yaml",
-                    "local_key": "ip",
+                    "local_key": "interface",
                     "foreign_key": "target",
                     "type": "many"
                   },
@@ -789,9 +792,17 @@
                   "network_name": {
                     "type": "string"
                   },
-                  "ip": {
-                    "type": "string",
-                    "pattern": "^[1-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[1-9][0-9]?[0-9]?$"
+                  "interface": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^[1-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[0-9][0-9]?[0-9]?\\.[1-9][0-9]?[0-9]?$"
+                      },
+                      {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-.]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
+                      }
+                    ]
                   }
                 }
               }

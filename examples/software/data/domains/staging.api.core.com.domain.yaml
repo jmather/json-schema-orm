@@ -1,0 +1,3 @@
+name: staging.api.core.com
+targets:
+  - target: my-staging-app.herokuapps.com
