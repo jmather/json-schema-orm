@@ -130,6 +130,6 @@ Example: `./bin/cli.js -p examples/software bundle examples/software/bundle/sche
 
 ## Diagram
 
-Example: `./bin/cli.js -p examples/software diagram && open test.dot`
+Example: `./bin/cli.js -p examples/software diagram && open test.png`
 
 ![Software Diagram Example](examples/software/diagrams/model.png)
