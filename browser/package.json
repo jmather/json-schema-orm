@@ -1,0 +1,42 @@
+{
+  "name": "react-bootstrap-starter",
+  "version": "1.0.4",
+  "author": "John Gleason <jogleasonjr@gmail.com>",
+  "description": "Sample project that uses react-bootstrap with reactify, browserify, and browser-sync.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jogleasonjr/react-bootstrap-starter.git"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "reactify",
+        {
+          "es6": true
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.6",
+    "browserify": "^14.0.0",
+    "gulp": "^3.8.10",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-less": "3.3.0",
+    "gulp-notify": "^2.1.0",
+    "gulp-sourcemaps": "^2.4.0",
+    "gulp-util": "^3.0.1",
+    "pretty-hrtime": "^1.0.3",
+    "reactify": "^1.1.1",
+    "require-dir": "^0.3.1",
+    "underscore": "^1.7.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-bootstrap": "^0.32.3",
+    "react-dom": "^15.4.2",
+    "react-schema-viewer": "^2.3.3"
+  }
+}
