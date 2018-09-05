@@ -78,6 +78,9 @@ class ModelHandler {
             const foreignRepo = this.orm.getRepositoryByPath(join.schema)
 
             matchTier = _.map(matchTier, refObj => {
+                if (refObj[join.local_key] === undefined) {
+                    return (join.type === 'one') ? null : []
+                }
                 const search = {}
                 search[join.foreign_key] = refObj[join.local_key]
                 this._debug('_get')('Searching for: %o', search)
@@ -93,6 +96,8 @@ class ModelHandler {
             if (join.type === 'many') {
                 matchTier = _.flatten(matchTier)
             }
+
+            matchTier = _.filter(matchTier, o => !!o)
 
             matchTier = _.uniq(matchTier, false, o => o.___data___)
 
