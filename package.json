@@ -30,6 +30,7 @@
     "js-yaml": "^3.13.1",
     "json-schema-ref-parser": "^5.1.2",
     "lodash": "^4.17.11",
+    "merge": "^1.2.1",
     "supports-color": "^5.5.0",
     "svg-to-img": "^2.0.7",
     "tiny-worker": "^2.1.2",
@@ -40,7 +41,7 @@
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-jest": "^21.22.0",
-    "jest": "^23.5.0",
+    "jest": "^24.8.0",
     "prettier": "^1.14.2"
   }
 }
