@@ -1,0 +1,23 @@
+sudo: false
+language: node_js
+dist: trusty
+node_js:
+- '8'
+branches:
+  only:
+  - master
+cache:
+  directories:
+  - node_modules
+before_install:
+- npm update
+install:
+- npm install
+script:
+- npm test -- --coverage && cat ./coverage/lcov.info | npx coveralls
+- PACKAGE_VERSION=$(node -p -e "require('./package.json').version") sonar-scanner -X -Dsonar.projectVersion=$PACKAGE_VERSION
+addons:
+  sonarcloud:
+    organization: "jmather-github"
+    token:
+      secure: CbsnhmuEFf3d0dtliMc/txP8TpAtAplXRCJ+EojWT+aRWV1IN9/GqBO3VNYxDw5gFTKH4Vjp1Frg7pVo00HgFT6mke8g+ebY6GttuqRyUsf2JbCFkfNEG90SarOohLsl9iJWFf+f6O7xlUGaYIWH+wOE3ZxYP79BqnBAdu40PKPW6shDiZbs9EldKL1Dlty8nJquWtIhec9tIYrfrhIWlOd7bT8TLNBjxru6MyTBNGr4O478daOgdAW6/wBaMcbVOkqbOpXjbS8NhTvLi4kWv++qthnXdfteRFiYd2PL/F801yA8eZGj9vUtVfR4UmdHB49JxLG+PdAZzjg4RkEaFlBmbu1oCK52z+vbvq27am7YoARKiTvJQA3wWXzI9b8wgd8HLPsPwZLirciVYeGfp9j1SRXC77/0a4k8iaLZxVnRcbTrPZovS6Y9aeajUtgU3ZDLzP+KiTEeGPFPpQZ5j1yjlFze55epzuMb7Paws0gP1IikgWjuGHSzISxnxnNPJ1KHbrAs5KqQ+mUTNncMsZPmHZmx86AhygZdBvkPwdcQRZMps2P6X+t16R3chNPaxnHqXdTEVFyoqyusHvSyCyC0i5aJMeRj3xMWNh6kp1TIBmkfWc5YwN1mJcifOn+PbGjzF0uOA6XqhMXn2h8kXP0QDlfiSMDZueqJ/rytXhg=

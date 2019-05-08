@@ -1,8 +1,15 @@
 {
   "name": "json-schema-orm",
   "version": "1.0.0",
-  "description": "",
-  "main": "bin/dorm.js",
+  "description": "A tool for managing data with JSON Schema",
+  "main": "src/orm/index.js",
+  "bin": {
+    "json-schema-orm": "./bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github:jmather/json-schema-orm"
+  },
   "scripts": {
     "test": "node bin/refresh-examples.js && jest",
     "coverage": "npm test -- --config jest-coverage.config.js || echo ''",
@@ -20,8 +27,9 @@
     "cli": "^1.0.1",
     "debug": "^3.1.0",
     "glob": "^7.1.2",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^3.13.1",
     "json-schema-ref-parser": "^5.1.2",
+    "lodash": "^4.17.11",
     "supports-color": "^5.5.0",
     "svg-to-img": "^2.0.7",
     "tiny-worker": "^2.1.2",
@@ -29,7 +37,8 @@
     "viz.js": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.4.0",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
     "eslint-plugin-jest": "^21.22.0",
     "jest": "^23.5.0",
     "prettier": "^1.14.2"
