@@ -1,6 +1,6 @@
 {
   "name": "json-schema-orm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tool for managing data with JSON Schema",
   "main": "src/orm/index.js",
   "bin": {
