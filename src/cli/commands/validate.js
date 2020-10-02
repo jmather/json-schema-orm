@@ -1,12 +1,23 @@
 const tools = require('../../tools')
 const cli = require('cli')
 const Ajv = require('ajv')
+const betterAjvErrors = require('better-ajv-errors');
 const glob = require('glob')
 const path = require('path')
 const refResolver = require('json-schema-ref-parser')
-const ajv = new Ajv()
+const ajv = new Ajv({ jsonPointers: true })
 
 cli.parse(null, ['meta-schemas', 'schemas', 'data'])
+
+function ajvDefaultMeta(self) {
+    var meta = self._opts.meta;
+    self._opts.defaultMeta = typeof meta == 'object'
+        ? self._getId(meta) || meta
+        : self.getSchema(META_SCHEMA_ID)
+            ? META_SCHEMA_ID
+            : undefined;
+    return self._opts.defaultMeta;
+}
 
 cli.main((args, options) => {
     let hadError = false,
@@ -27,8 +38,15 @@ cli.main((args, options) => {
                 cli.info(`checking ${schemaFile}...`)
 
                 if (!ajv.validateSchema(schema)) {
+                    var $schema = schema.$schema;
+                    if ($schema !== undefined && typeof $schema != 'string')
+                        throw new Error('$schema must be a string')
+                    $schema = $schema || ajv._opts.defaultMeta || ajvDefaultMeta(ajv)
+
                     cli.error(`Error processing ${schemaFile}`)
-                    cli.error(tools.prettyJSON(ajv.errors))
+                    cli.error(betterAjvErrors($schema, schema, ajv.errors, { format: 'cli', indent: 2}))
+                    // cli.error(betterAjvErrors($schema, schema, ajv.errors))
+                    // cli.error(tools.prettyJSON(ajv.errors))
                     hadError = true
                 }
             })
@@ -54,9 +72,11 @@ cli.main((args, options) => {
                     cli.info(`Loading ${schemaFile}...`)
                     const schema = tools.loadYAML(schemaFile)
                     cli.info(`Checking ${schemaFile}...`)
-                    if (!ajv.validate(metaSchema, schema)) {
+                    const validate = ajv.compile(metaSchema);
+                    if (! validate(schema)) {
                         cli.error(`Error processing ${schemaFile}`)
-                        cli.error(tools.prettyJSON(ajv.errors))
+                        cli.error(betterAjvErrors(metaSchema, schema, validate.errors, { format: 'cli', indent: 2}));
+                        // cli.error(tools.prettyJSON(validate.errors))
                         hadError = true
                     }
                 })
@@ -88,7 +108,8 @@ cli.main((args, options) => {
                     const data = tools.loadYAML(dataFile)
                     if (!ajv.validate(metaSchema, data)) {
                         cli.error(`Error processing ${dataFile}`)
-                        cli.error(tools.prettyJSON(ajv.errors))
+                        cli.error(betterAjvErrors(metaSchema, data, ajv.errors, { format: 'cli', indent: 2}))
+                        // cli.error(tools.prettyJSON(ajv.errors))
                         hadError = true
                     }
                 }).catch(e => {

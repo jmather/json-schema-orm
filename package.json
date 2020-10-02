@@ -23,7 +23,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ajv": "^6.10.0",
+    "ajv": "^6.12.5",
+    "better-ajv-errors": "^0.6.7",
     "cli": "^1.0.1",
     "debug": "^3.2.6",
     "glob": "^7.1.4",
