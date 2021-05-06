@@ -36,7 +36,7 @@
     "supports-color": "^5.5.0",
     "svg-to-img": "^2.0.9",
     "tiny-worker": "^2.2.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
