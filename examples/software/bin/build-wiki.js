@@ -12,9 +12,9 @@ const tools = require('./build-wiki/lib/tools')
 const WIKI_ROOT = path.relative(process.cwd(), __dirname + '/../build/wiki')
 console.log({WIKI_ROOT})
 
-const ModelHandler = JS_ORM.ORM.ORM.prototype.ModelHandler
+const ModelHandler = JS_ORM.ModelHandler
 
-class OverloadedModelHandler extends ModelHandler {
+class WikiModelHandler extends ModelHandler {
     constructor(schema, orm) {
         super(schema, orm)
     }
@@ -30,18 +30,16 @@ class OverloadedModelHandler extends ModelHandler {
     }
 }
 
-JS_ORM.ORM.ORM.prototype.ModelHandler = OverloadedModelHandler
-
 cli.main((args) => {
     const buildRoot = path.resolve(`${__dirname}/../build/wiki`)
     const dataRoot = path.resolve(`${__dirname}/../data`)
     const schemasPath = path.resolve(`${__dirname}/../bundle/schemas.json`)
 
     console.log('Compiling data model...')
-    const loader = new JS_ORM.Loader()
-
-    const orm = loader.loadSchemas(schemasPath)
-    loader.loadData(dataRoot)
+    const orm = JS_ORM.Loader.loadSchemas(schemasPath, {
+        modelHandler: WikiModelHandler,
+    })
+    orm.loadData(dataRoot)
 
     const generator = new WikiGenerator()
     generator.generate(orm, buildRoot)

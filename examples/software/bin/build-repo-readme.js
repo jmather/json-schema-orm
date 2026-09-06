@@ -19,10 +19,8 @@ cli.main((args) => {
     const schemasPath = path.resolve(`${__dirname}/../bundle/schemas.json`)
 
     console.log('Compiling data model...')
-    const loader = new JS_ORM.Loader()
-
-    const orm = loader.loadSchemas(schemasPath)
-    loader.loadData(dataRoot)
+    const orm = JS_ORM.Loader.loadSchemas(schemasPath)
+    orm.loadData(dataRoot)
 
     const graph = {}
 
