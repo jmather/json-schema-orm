@@ -1,0 +1,3 @@
+name: Staging
+description: Final checkpoint before promotion to production.
+priority: 20

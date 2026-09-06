@@ -1,0 +1,47 @@
+name: Team Detail Document
+type: object
+orm:
+  singular: Team
+  plural: Teams
+  relations:
+    - local_property: covers
+      joins:
+        - type: many
+          schema: team_coverage_item.schema.yaml
+          local_key: name
+          foreign_key: team_name
+    - local_property: components
+      joins:
+        - type: many
+          schema: team_coverage_item.schema.yaml
+          local_key: name
+          foreign_key: team_name
+        - type: one
+          schema: component.schema.yaml
+          local_key: component_name
+          foreign_key: name
+    - local_property: services
+      joins:
+        - type: many
+          schema: team_coverage_item.schema.yaml
+          local_key: name
+          foreign_key: team_name
+        - type: one
+          schema: service.schema.yaml
+          local_key: service_name
+          foreign_key: name
+properties:
+  name:
+    type: string
+  covers:
+    type: array
+    items:
+      type: object
+      title: Team Coverage Item
+      properties:
+        service_name:
+          type: string
+        component_name:
+          type: string
+required: [ name ]
+additionalProperties: false

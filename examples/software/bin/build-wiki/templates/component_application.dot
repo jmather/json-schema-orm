@@ -1,0 +1,47 @@
+{{? it.component.description }}{{= it.component.description }}{{?}}
+
+| Owning Team(s) | Repository |
+|----------------|------------|
+| {{= it.component.covered_by ? it.component.covered_by.map(cb => cb.team.name).join(', ') : ''}} | {{? it.component.repository }}[{{= it.component.repository.name }}]({{= it.component.repository.wiki_path }}){{?}} |
+
+
+{{~ it.component.depends_on :dep:idx}}{{? dep.parent_component_name }}{{? idx === 0}}## Components Depended On
+{{?}}
+- [{{= dep.parent_component.name }}]({{=dep.parent_component.wiki_path}}){{?}}{{~}}
+
+{{~ it.component.depends_on :dep:idx}}{{? dep.service_name }}{{? idx === 0}}## Services Depended On
+{{?}}
+- [{{= dep.service.name }}]({{=dep.service.wiki_path}}){{? dep.config_sets }}
+  <table>
+      <thead>
+          <tr>
+              <th>Name</th>{{~ it.getConfigSetProps(dep.config_sets) :prop:nidx}}
+              <th>{{= prop }}</th>{{~}}
+          </tr>
+      </thead>
+      <tbody>{{~ Object.keys(dep.config_sets) :cs:n}}
+          <tr>
+              <td><a id="{{= it.slugify(dep.service.name + ' ' + cs) }}"></a>{{= cs }}</td>{{~ it.getConfigSetProps(dep.config_sets) :prop:nidx}}
+              <td>{{= dep.config_sets[cs][prop] ? it.json2html(dep.config_sets[cs][prop]) : '' }}</td>{{~}}
+          </tr>{{~}}
+      </tbody>
+  </table>
+{{?}}{{?}}{{~}}
+
+{{? it.component.environments && it.component.environments.length > 0 }}
+## Environments
+
+| Environment Name | Environment URL |{{~ it.getEnvConfigSets(it.component.environments) :prop:nidx}} [{{= prop }}](#{{= it.slugify(prop + ' defaults') }}) |{{~}}
+|------------------|-----------------|{{~ it.getEnvConfigSets(it.component.environments) :prop:nidx}}-------------|{{~}}
+{{~ it.component.environments :e:index }}| {{= e.environment_name }} | [{{= e.url}}]({{= e.url }}) |{{~ it.getEnvConfigSets(it.component.environments) :prop:nidx}}{{= e.config_sets[prop] ? '[' + e.config_sets[prop] + '](#' + it.slugify(prop + ' ' + e.config_sets[prop]) + ')' : '' }}|{{~}}
+{{~}}
+
+{{?}}
+
+{{? it.component.parent_components.length > 0 }}
+## Sub Components
+{{~ it.dependencies :dep:idx }}
+{{= '  '.repeat(dep.level - 1) }}* [{{= dep.component.name }}]({{= dep.component.wiki_path }}){{~}}
+{{?}}
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

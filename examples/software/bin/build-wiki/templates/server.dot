@@ -1,0 +1,6 @@
+ Hostname | Network Interfaces |
+|----|----|
+| {{= it.hostname }} | {{= it.network_interfaces.map(inet => inet.ip).join(', ') }}
+
+ ---
+ Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

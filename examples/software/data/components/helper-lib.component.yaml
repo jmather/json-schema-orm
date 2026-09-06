@@ -1,0 +1,6 @@
+name: Helper Library
+type: library
+repository_name: Helper Library Repo
+covered_by:
+  - team_name: Internal Tooling
+description: The helper library blah blah blah.

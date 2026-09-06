@@ -1,0 +1,20 @@
+{{= it.description || '' }}
+
+| Site | SSH Checkout URL |
+|-----------|------------------|
+|  {{? it.checkout && it.checkout.web }}[Web]({{= it.checkout.web }}){{?}} | {{? it.checkout && it.checkout.ssh }}[SSH]({{= it.checkout.ssh }}){{?}} |
+
+
+{{? it.components.length > 0 }}
+## Components
+
+These are the applications and libraries exposed by this repository
+
+| Name | Type |
+|------|-----:|
+{{~ it.components :component:index}}| [{{= component.name }}]({{= component.wiki_path }}) | {{= component.type }} |
+{{~}}
+{{?}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

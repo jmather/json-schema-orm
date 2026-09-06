@@ -1,0 +1,20 @@
+## Repositories with Components
+
+| Name | Description | Source |
+|------|-------------|-------:|
+{{~ it.bound :repo:index}}| [{{= repo.name }}]({{= repo.wiki_path }}) | {{= repo.description.replace(/\n/g, ' ') }} | {{? repo.checkout && repo.checkout.web }}[Web]({{= repo.checkout.web }}){{?}}
+{{~}}
+
+{{? it.unbound.length > 0 }}
+## Repositories without Components
+
+These repositories have no components components associated with them yet.
+
+
+| Name | Description | Source |
+|------|-------------|-------:|
+{{~ it.unbound :repo:index }}| [{{= repo.name }}]({{= repo.wiki_path }}) | {{= repo.description.replace(/\n/g, ' ') }} | {{? repo.checkout && repo.checkout.web }}[Web]({{= repo.checkout.web }}){{?}}
+{{~}}{{?}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

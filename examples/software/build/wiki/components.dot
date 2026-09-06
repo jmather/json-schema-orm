@@ -1,0 +1,22 @@
+digraph {
+rankdir=LR;
+Core_API [label="Core API
+Core Project", shape=box3d];
+Helper_Library [label="Helper Library
+Helper Library Repo", shape=box3d];
+Core_UI [label="Core UI
+Core Project", shape=box3d];
+UI_Helper_Library [label="UI Helper Library
+Helper Library Repo", shape=box3d];
+Core_API -> Helper_Library;
+Core_UI -> Core_API;
+Core_UI -> UI_Helper_Library;
+UI_Helper_Library [label="UI Helper Library
+Helper Library Repo", shape=box3d];
+Core_UI [label="Core UI
+Core Project", shape=box3d];
+Amazon_S3 [label="Amazon S3", shape=component, style=filled, color=lightgray];
+Amazon_SES [label="Amazon SES", shape=component, style=filled, color=lightgray];
+Core_API -> Amazon_S3;
+Core_API -> Amazon_SES;
+}

@@ -1,0 +1,20 @@
+| Environment Name | Components |
+|------------------|------------|{{~ it.environments :environment:index }}{{? it.componentsByEnv[environment] && it.componentsByEnv[environment].length > 0 }}
+| [{{= environment }}](#{{= environment.toLowerCase().replace(/ /g, '-') }}) | {{? it.componentsByEnv[environment] }}{{= it.componentsByEnv[environment].map((component) => { return '[' + component.component.name + '](' + component.component.wiki_path + ') ([Live Site](' + component.url + '))' }).join(', ') }}{{?}}{{~}}{{?}} |
+
+
+{{~ it.environments :environment:index }}{{? it.componentsByEnv[environment] && it.componentsByEnv[environment].length > 0 }}
+## {{= environment }}
+
+{{? it.environmentsByEnv[environment] && it.environmentsByEnv[environment].description }}
+{{= it.environmentsByEnv[environment].description }}
+
+{{?}}
+| Component Name | Url |
+|----------------|-----|
+{{~ it.componentsByEnv[environment] :componentEnv:idx }}| [{{= componentEnv.component.name }}]({{= componentEnv.component.wiki_path }}) | {{= componentEnv.url }} |
+{{~}}
+{{~}}{{?}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

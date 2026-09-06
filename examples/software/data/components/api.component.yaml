@@ -1,7 +1,17 @@
 name: Core API
+type: application
 repository_name: Core Project
+depends_on:
+  - parent_component_name: Helper Library
+  - service_name: Amazon S3
+  - service_name: Amazon SES
+covered_by:
+  - team_name: Backend Devs
 environments:
   - environment_name: Production
     url: https://api.core.com/
   - environment_name: Staging
     url: https://staging.api.core.com/
+  - environment_name: Local
+    url: https://my-api.local/
+description: The API Component blah blah blah.

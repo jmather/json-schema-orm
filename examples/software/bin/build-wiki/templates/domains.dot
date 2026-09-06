@@ -1,0 +1,11 @@
+{{~ it.domains :domain:index }}
+# [{{= domain.name }}]({{= domain.wiki_path }})
+
+| Target |
+|----|
+{{~ domain.targets :target:idx }}| {{= target.target }} |
+{{~}}
+{{~}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

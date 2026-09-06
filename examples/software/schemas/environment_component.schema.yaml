@@ -45,3 +45,25 @@ properties:
   deployment_target:
     type: string
     expression: this.url || this.server_name
+  config_sets:
+    type: object
+    properties:
+      defaults:
+        type: object
+        additionalProperties:
+          oneOf:
+            - type: string
+            - type: boolean
+            - type: array
+              items:
+                type: string
+    additionalProperties:
+      type: object
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: boolean
+          - type: array
+            items:
+              type: string
+required: [ environment_name, component_name ]

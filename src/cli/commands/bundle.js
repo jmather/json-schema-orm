@@ -68,8 +68,8 @@ cli.main((args, options) => {
 
             const content = options.beautify ? tools.prettyJSON(schema) : JSON.stringify(schema)
             fs.writeFileSync(outputPath, content)
-
-            cli.ok(`Wrote ${outputPath}...`)
+            const relPath = path.relative(process.cwd(), outputPath);
+            cli.ok(`Wrote ${relPath}...`)
         })
     })
 })

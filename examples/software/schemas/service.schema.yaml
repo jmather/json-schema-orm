@@ -1,0 +1,70 @@
+type: object
+orm:
+  singular: Service
+  plural: Services
+  relations:
+    - local_property: instances
+      joins:
+        - schema: service_instance.schema.yaml
+          local_key: name
+          foreign_key: service_name
+          type: many
+    - local_property: depended_on_by
+      joins:
+        - schema: component_dependency.schema.yaml
+          local_key: name
+          foreign_key: service_name
+          type: many
+    - local_property: depended_on_by_components
+      joins:
+      - schema: component_dependency.schema.yaml
+        local_key: name
+        foreign_key: service_name
+        type: many
+      - schema: component.schema.yaml
+        local_key: child_component_name
+        foreign_key: name
+        type: one
+    - local_property: covered_by
+      joins:
+        - schema: team_coverage_item.schema.yaml
+          local_key: name
+          foreign_key: service_name
+          type: many
+properties:
+  name:
+    type: string
+  covered_by:
+    type: array
+    items:
+      title: Service Ownership Record
+      type: object
+      properties:
+        team_name:
+          type: string
+  shared_values:
+    patternProperties:
+      ".*":
+        type: string
+  parameters:
+    type: array
+    items:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        default:
+          type: string
+  instances:
+    type: array
+    items:
+      type: object
+      properties:
+        instance_name:
+          type: string
+        details:
+          type: object
+      additionalProperties: false
+additionalProperties: false

@@ -1,0 +1,6 @@
+name: Helper Library Repo
+description: Holds the helper library component
+type: git
+checkout:
+  web: http://example.com/lib.git
+  ssh: ssh://git@example.com/lib.git

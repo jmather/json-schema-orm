@@ -14,10 +14,16 @@ orm:
           local_key: network_name
           foreign_key: name
           type: one
+    - local_property: domain_targets
+      joins:
+        - type: many
+          schema: domain_target.schema.yaml
+          local_key: interface
+          foreign_key: target
 properties:
   name:
     type: string
-    expression: this.server_name + ' ' + this.network_name + ' ' + this.ip
+    expression: this.server_name + ' ' + this.network_name + ' ' + this.interface
   network_name:
     type: string
   server_name:
@@ -29,5 +35,5 @@ properties:
     - type: string
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$
 
-required: [ network_name, server_name, ip ]
+required: [ network_name, server_name, interface ]
 additionalProperties: false

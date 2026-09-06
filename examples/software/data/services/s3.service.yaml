@@ -1,0 +1,14 @@
+name: Amazon S3
+parameters:
+  - name: AwsRegion
+    type: string
+  - name: AwsAccountId
+    type: string
+  - name: AwsAccountSecret
+    type: string
+instances:
+  - instance_name: US-West-2
+    details:
+      AwsRegion: us-west-2
+      AwsAccountId: $AwsAccountId$
+      AwsAccountSecret: $AwsAccountSecret$

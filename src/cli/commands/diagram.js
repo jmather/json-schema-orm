@@ -42,9 +42,14 @@ cli.main((args, options) => {
     const dotPath = pngPath.replace(/\.png$/, '.dot')
 
     fs.writeFileSync(dotPath, dotString)
+    let relPath = path.relative(process.cwd(), dotPath)
+    cli.info('Wrote dot file to ' + relPath + '...')
 
     convertDot.dotToPng(dotString).then(png => {
+        // console.log(png)
         fs.writeFileSync(pngPath, png)
+        relPath = path.relative(process.cwd(), pngPath)
+        cli.ok('Wrote png to ' + relPath + '...')
     })
 })
 

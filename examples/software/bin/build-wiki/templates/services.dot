@@ -1,0 +1,39 @@
+{{~ it.services :service:index }}
+# [{{= service.name }}]({{= service.wiki_path }})
+
+{{? service.shared_properties }}
+## Shared Properties
+
+| Name | Value |
+{{~ service.shared_properties :value:name }}| {{= name }} | {{= value }} |
+{{~}}{{?}}
+
+{{? service.parameters && service.parameters.length > 0 }}
+## Parameters
+| Name | Type | Default |
+|------|------|---------|
+{{~ service.parameters :props:idx }}| {{= props.name }} | {{= props.type }} | {{= props.default ? prop.default : '_(required)_' }} |
+{{~}}{{?}}
+
+{{? service.instances && service.instances.length > 0 }}
+## Instances
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>{{~ service.instances :instance:iidx}}
+        <tr>
+            <td>{{= instance.instance_name }}</td>
+            <td>{{= instance.details ? it.json2html(instance.details) : '' }}</td>
+        </tr>{{~}}
+    </tbody>
+</table>
+{{?}}
+{{~}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)
