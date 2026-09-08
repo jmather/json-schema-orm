@@ -18,6 +18,8 @@ properties:
       - git
       - subversion
       - cvs
+  description:
+    type: string
   checkout:
     type: object
     properties:

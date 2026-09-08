@@ -1,0 +1,29 @@
+# {{= it.name }}
+
+{{= it.description }}
+
+{{? it.components.length > 0 }}
+# Components
+
+These are the applications and libraries exposed by this repository
+
+{{~ it.components :component:index}}
+## {{= component.name }} ({{= component.type }})
+
+{{= component.description }}
+
+{{? component.environments.length > 0 }}
+### {{= component.name }} Environments
+
+| Environment Name | Environment URL | Servers |
+|------------------|-----------------|---------|
+{{~ component.environments :e:index }}| {{= e.environment_name }} | {{? e.url }}[{{= e.url}}]({{= e.url }}){{??}}{{= e.server_name }}{{?}} | {{= e.domain.targets.map(t => t.server.hostname).join(', ') }} |
+{{~}}
+{{?}}
+{{~}}
+{{?}}
+
+
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

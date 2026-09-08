@@ -1,0 +1,11 @@
+{{~ it.networks :network:index }}
+# [{{= network.name }}]({{= network.wiki_path }})
+
+| Server Name | IP | Domains |
+|----|----|----|
+{{~ network.interfaces :inet:idx }}| {{= inet.server.name }} | {{= inet.ip }} | {{= inet.domain_targets.map(dt => dt.domain_name).join(', ') }} |
+{{~}}
+{{~}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

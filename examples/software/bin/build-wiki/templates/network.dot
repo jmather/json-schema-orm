@@ -1,0 +1,7 @@
+| Server Name | IP | Domains |
+|----|----|----|
+{{~ it.interfaces :inet:idx }}| {{= inet.server.name }} | {{= inet.ip }} | {{= inet.domain_targets.map(dt => dt.domain_name).join(', ') }} |
+{{~}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

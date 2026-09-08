@@ -1,0 +1,33 @@
+![Component Map](components.png)
+
+Below you will find a list of applications and libraries.
+
+## Main Components
+
+| Project Name | Depends on |
+|--------------|------------|
+{{~ it.topLevelComponents :component }}| [ {{= component.name }} ]({{= component.wiki_path }}) | {{= it.topLevelComponentDependencies[component.name].map((subComponent) => { return '['+subComponent.name+' ('+subComponent.type+') ]('+subComponent.wiki_path+')'; }).join(', ') }} |
+{{~}}
+
+{{? it.componentTypes.application && it.componentTypes.application.length > 0 }}
+
+## Applications
+
+| Application Name | Repository | Source |
+|------------------|------------|---------------:|
+{{~ it.componentTypes.application :component:index }}| [ {{= component.name }} ]({{= component.wiki_path }}) | {{? component.repository }}[{{= component.repository.name }}]({{= component.repository.wiki_path }}){{?}} | {{? component.repository && component.repository.checkout }}[Web]({{= component.repository.checkout.web }}){{?}} |
+{{~}}
+{{?}}
+
+{{? it.componentTypes.library && it.componentTypes.library.length > 0 }}
+
+## Libraries
+
+| Library Name | Repository | Source |
+|------------------|------------|---------------:|
+{{~ it.componentTypes.library :component:index }}| [ {{= component.name }} ]({{= component.wiki_path }}) | {{? component.repository }}[{{= component.repository.name }}]({{= component.repository.wiki_path }}){{?}} | {{? component.repository && component.repository.checkout }}[Web]({{= component.repository.checkout.web }}){{?}} |
+{{~}}
+{{?}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

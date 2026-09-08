@@ -1,13 +1,20 @@
 const _ = require('underscore')
+const ModelHandler = require('./ModelHandler')
+const Repository = require('./Repository')
 
 class ORM {
     /**
      *
-     * @param {SchemaCollection} schema
+     * @param {SchemaCollection} schemaCollection
+     * @param {typeof ModelHandler} [modelHandlerClass]
+     * @param {typeof Repository} [repositoryClass]
      */
-    constructor(schema) {
-        this.schemaCollection = schema
+    constructor(schemaCollection, modelHandlerClass = ModelHandler, repositoryClass = Repository) {
+        this.schemaCollection = schemaCollection
         this.repositories = {}
+
+        this.ModelHandler = modelHandlerClass
+        this.Repository = repositoryClass
 
         this._buildRepositories()
     }
@@ -37,8 +44,5 @@ class ORM {
         return this.getRepository(schemaName)
     }
 }
-
-ORM.prototype.Repository = require('./Repository')
-ORM.prototype.ModelHandler = require('./ModelHandler')
 
 module.exports = ORM

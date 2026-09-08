@@ -1,0 +1,10 @@
+{{~ it.servers :server:index }}
+## [{{= server.name }}]({{= server.wiki_path }})
+
+ Hostname | Network Interfaces |
+|----|----|
+| {{= server.hostname }} | {{= server.network_interfaces.map(inet => inet.ip).join(', ') }}
+{{~}}
+
+---
+Generated from [JSON Schema ORM](https://github.com/jmather/json-schema-orm)

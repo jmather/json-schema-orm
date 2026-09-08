@@ -4,6 +4,7 @@ const path = require('path')
 const _ = require('underscore')
 const fs = require('fs')
 const convertDot = require('../../visualization/convert-dot')
+const JS_ORM = require('../../../index')
 
 
 
@@ -19,11 +20,9 @@ cli.main((args, options) => {
     const projectSchemasFile = path.resolve(options.project, 'bundle/schemas.json')
     const dataPath = path.resolve(options.project, 'data')
 
-    const loader = new JS_ORM.Loader()
+    const orm = JS_ORM.Loader.loadSchemas(projectSchemasFile)
 
-    const orm = loader.loadSchemas(projectSchemasFile)
-
-    loader.loadData(dataPath)
+    orm.loadData(dataPath)
 
     const dotTemplate = ' digraph {\n' +
         'node[shape=record,style=filled,fillcolor=gray95]\n' +
@@ -42,9 +41,14 @@ cli.main((args, options) => {
     const dotPath = pngPath.replace(/\.png$/, '.dot')
 
     fs.writeFileSync(dotPath, dotString)
+    let relPath = path.relative(process.cwd(), dotPath)
+    cli.info('Wrote dot file to ' + relPath + '...')
 
     convertDot.dotToPng(dotString).then(png => {
+        // console.log(png)
         fs.writeFileSync(pngPath, png)
+        relPath = path.relative(process.cwd(), pngPath)
+        cli.ok('Wrote png to ' + relPath + '...')
     })
 })
 

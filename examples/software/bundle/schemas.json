@@ -29,6 +29,18 @@
     },
     {
       "$ref": "#/definitions/schemas/server/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/service_instance/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/service/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/team_coverage_item/schema"
+    },
+    {
+      "$ref": "#/definitions/schemas/team/schema"
     }
   ],
   "definitions": {
@@ -44,10 +56,10 @@
                 "local_property": "parent_component",
                 "joins": [
                   {
+                    "type": "one",
                     "schema": "component.schema.yaml",
                     "local_key": "parent_component_name",
-                    "foreign_key": "name",
-                    "type": "one"
+                    "foreign_key": "name"
                   }
                 ]
               },
@@ -55,8 +67,19 @@
                 "local_property": "child_component",
                 "joins": [
                   {
+                    "type": "one",
                     "schema": "component.schema.yaml",
                     "local_key": "child_component_name",
+                    "foreign_key": "name"
+                  }
+                ]
+              },
+              {
+                "local_property": "service",
+                "joins": [
+                  {
+                    "schema": "service.schema.yaml",
+                    "local_key": "service_name",
                     "foreign_key": "name",
                     "type": "one"
                   }
@@ -76,6 +99,52 @@
             },
             "child_component_name": {
               "type": "string"
+            },
+            "service_name": {
+              "type": "string"
+            },
+            "config_sets": {
+              "type": "object",
+              "properties": {
+                "defaults": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              }
             }
           },
           "required": [
@@ -129,16 +198,16 @@
                 "local_property": "child_components",
                 "joins": [
                   {
+                    "type": "many",
                     "schema": "component_dependency.schema.yaml",
                     "local_key": "name",
-                    "foreign_key": "parent_component_name",
-                    "type": "many"
+                    "foreign_key": "parent_component_name"
                   },
                   {
+                    "type": "one",
                     "schema": "component.schema.yaml",
                     "local_key": "child_component_name",
-                    "foreign_key": "name",
-                    "type": "one"
+                    "foreign_key": "name"
                   }
                 ]
               },
@@ -146,16 +215,16 @@
                 "local_property": "parent_components",
                 "joins": [
                   {
+                    "type": "many",
                     "schema": "component_dependency.schema.yaml",
                     "local_key": "name",
-                    "foreign_key": "child_component_name",
-                    "type": "many"
+                    "foreign_key": "child_component_name"
                   },
                   {
+                    "type": "one",
                     "schema": "component.schema.yaml",
                     "local_key": "parent_component_name",
-                    "foreign_key": "name",
-                    "type": "one"
+                    "foreign_key": "name"
                   }
                 ]
               },
@@ -169,6 +238,34 @@
                     "type": "many"
                   }
                 ]
+              },
+              {
+                "local_property": "required_services",
+                "joins": [
+                  {
+                    "schema": "component_dependency.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "child_component_name",
+                    "type": "many"
+                  },
+                  {
+                    "schema": "service.schema.yaml",
+                    "local_key": "service_name",
+                    "foreign_key": "name",
+                    "type": "one"
+                  }
+                ]
+              },
+              {
+                "local_property": "covered_by",
+                "joins": [
+                  {
+                    "schema": "team_coverage_item.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "component_name",
+                    "type": "many"
+                  }
+                ]
               }
             ],
             "primary_property": "name"
@@ -176,6 +273,19 @@
           "type": "object",
           "properties": {
             "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "library",
+                "application",
+                "tool",
+                "resources",
+                "unknown"
+              ]
+            },
+            "description": {
               "type": "string"
             },
             "repository_name": {
@@ -212,6 +322,9 @@
                     "cvs"
                   ]
                 },
+                "description": {
+                  "type": "string"
+                },
                 "checkout": {
                   "type": "object",
                   "properties": {
@@ -243,8 +356,58 @@
                 "properties": {
                   "parent_component_name": {
                     "type": "string"
+                  },
+                  "service_name": {
+                    "type": "string"
+                  },
+                  "service_parameters": {
+                    "type": "object"
+                  },
+                  "config_sets": {
+                    "type": "object",
+                    "properties": {
+                      "defaults": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
+                      }
+                    }
                   }
-                }
+                },
+                "additionalProperties": false
               }
             },
             "depended_on_by": {
@@ -272,6 +435,12 @@
                   },
                   "server_name": {
                     "type": "string"
+                  },
+                  "config_sets": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
                   }
                 },
                 "required": [
@@ -500,8 +669,55 @@
             "deployment_target": {
               "type": "string",
               "expression": "this.url || this.server_name"
+            },
+            "config_sets": {
+              "type": "object",
+              "properties": {
+                "defaults": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              }
             }
-          }
+          },
+          "required": [
+            "environment_name",
+            "component_name"
+          ]
         }
       },
       "environment": {
@@ -582,6 +798,17 @@
                     "type": "one"
                   }
                 ]
+              },
+              {
+                "local_property": "domain_targets",
+                "joins": [
+                  {
+                    "type": "many",
+                    "schema": "domain_target.schema.yaml",
+                    "local_key": "interface",
+                    "foreign_key": "target"
+                  }
+                ]
               }
             ],
             "primary_property": "name"
@@ -589,7 +816,7 @@
           "properties": {
             "name": {
               "type": "string",
-              "expression": "this.server_name + ' ' + this.network_name + ' ' + this.ip"
+              "expression": "this.server_name + ' ' + this.network_name + ' ' + this.interface"
             },
             "network_name": {
               "type": "string"
@@ -613,7 +840,7 @@
           "required": [
             "network_name",
             "server_name",
-            "ip"
+            "interface"
           ],
           "additionalProperties": false
         }
@@ -684,6 +911,9 @@
                 "subversion",
                 "cvs"
               ]
+            },
+            "description": {
+              "type": "string"
             },
             "checkout": {
               "type": "object",
@@ -803,6 +1033,297 @@
                         "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-.]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$"
                       }
                     ]
+                  }
+                }
+              }
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "service_instance": {
+        "path": "service_instance.schema.yaml",
+        "schema": {
+          "orm": {
+            "singular": "Service Instance",
+            "plural": "Service Instances",
+            "primary_property": "name"
+          },
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "expression": "this.service_name + ' ' + this.instance_name"
+            },
+            "instance_name": {
+              "type": "string"
+            },
+            "service_name": {
+              "type": "string"
+            },
+            "details": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "service": {
+        "path": "service.schema.yaml",
+        "schema": {
+          "type": "object",
+          "orm": {
+            "singular": "Service",
+            "plural": "Services",
+            "relations": [
+              {
+                "local_property": "instances",
+                "joins": [
+                  {
+                    "schema": "service_instance.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "service_name",
+                    "type": "many"
+                  }
+                ]
+              },
+              {
+                "local_property": "depended_on_by",
+                "joins": [
+                  {
+                    "schema": "component_dependency.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "service_name",
+                    "type": "many"
+                  }
+                ]
+              },
+              {
+                "local_property": "depended_on_by_components",
+                "joins": [
+                  {
+                    "schema": "component_dependency.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "service_name",
+                    "type": "many"
+                  },
+                  {
+                    "schema": "component.schema.yaml",
+                    "local_key": "child_component_name",
+                    "foreign_key": "name",
+                    "type": "one"
+                  }
+                ]
+              },
+              {
+                "local_property": "covered_by",
+                "joins": [
+                  {
+                    "schema": "team_coverage_item.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "service_name",
+                    "type": "many"
+                  }
+                ]
+              }
+            ],
+            "primary_property": "name"
+          },
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "covered_by": {
+              "type": "array",
+              "items": {
+                "title": "Service Ownership Record",
+                "type": "object",
+                "properties": {
+                  "team_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "shared_values": {
+              "patternProperties": {
+                ".*": {
+                  "type": "string"
+                }
+              }
+            },
+            "parameters": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "default": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "instances": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "instance_name": {
+                    "type": "string"
+                  },
+                  "details": {
+                    "type": "object"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "team_coverage_item": {
+        "path": "team_coverage_item.schema.yaml",
+        "schema": {
+          "name": "Team Coverage Detail Document",
+          "type": "object",
+          "orm": {
+            "singular": "Team Coverage Item",
+            "plural": "Team Coverage Items",
+            "relations": [
+              {
+                "local_property": "component",
+                "joins": [
+                  {
+                    "type": "one",
+                    "schema": "component.schema.yaml",
+                    "local_key": "component_name",
+                    "foreign_key": "name"
+                  }
+                ]
+              },
+              {
+                "local_property": "service",
+                "joins": [
+                  {
+                    "type": "one",
+                    "schema": "service.schema.yaml",
+                    "local_key": "service_name",
+                    "foreign_key": "name"
+                  }
+                ]
+              },
+              {
+                "local_property": "team",
+                "joins": [
+                  {
+                    "type": "one",
+                    "schema": "team.schema.yaml",
+                    "local_key": "team_name",
+                    "foreign_key": "name"
+                  }
+                ]
+              }
+            ],
+            "primary_property": "name"
+          },
+          "properties": {
+            "team_name": {
+              "type": "string"
+            },
+            "service_name": {
+              "type": "string"
+            },
+            "component_name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "team_name"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "team": {
+        "path": "team.schema.yaml",
+        "schema": {
+          "name": "Team Detail Document",
+          "type": "object",
+          "orm": {
+            "singular": "Team",
+            "plural": "Teams",
+            "relations": [
+              {
+                "local_property": "covers",
+                "joins": [
+                  {
+                    "type": "many",
+                    "schema": "team_coverage_item.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "team_name"
+                  }
+                ]
+              },
+              {
+                "local_property": "components",
+                "joins": [
+                  {
+                    "type": "many",
+                    "schema": "team_coverage_item.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "team_name"
+                  },
+                  {
+                    "type": "one",
+                    "schema": "component.schema.yaml",
+                    "local_key": "component_name",
+                    "foreign_key": "name"
+                  }
+                ]
+              },
+              {
+                "local_property": "services",
+                "joins": [
+                  {
+                    "type": "many",
+                    "schema": "team_coverage_item.schema.yaml",
+                    "local_key": "name",
+                    "foreign_key": "team_name"
+                  },
+                  {
+                    "type": "one",
+                    "schema": "service.schema.yaml",
+                    "local_key": "service_name",
+                    "foreign_key": "name"
+                  }
+                ]
+              }
+            ],
+            "primary_property": "name"
+          },
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "covers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "title": "Team Coverage Item",
+                "properties": {
+                  "service_name": {
+                    "type": "string"
+                  },
+                  "component_name": {
+                    "type": "string"
                   }
                 }
               }

@@ -1,9 +1,16 @@
 name: Core UI
+type: application
 repository_name: Core Project
 depends_on:
   - parent_component_name: Core API
+  - parent_component_name: UI Helper Library
+covered_by:
+  - team_name: Frontend Devs
 environments:
   - environment_name: Production
-    url: https://www.core.com
-  - environment_name: Production
+    url: https://www.core.com/
+  - environment_name: Staging
     url: https://staging.core.com/
+  - environment_name: Local
+    url: https://my-app.local/
+description: The frontend blah blah blah

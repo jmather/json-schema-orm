@@ -1,4 +1,5 @@
 name: Core Project
+description: Holds the core API and UI components
 type: git
 checkout:
   web: http://example.com/site.git

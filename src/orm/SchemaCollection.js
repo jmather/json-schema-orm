@@ -5,10 +5,12 @@ class SchemaCollection {
     /**
      *
      * @param {{ oneOf: [ Object ], definitions: { schemas: Object }}} schemaCollection
+     * @param {typeof Schema} [schemaClass]
      */
-    constructor(schemaCollection) {
+    constructor(schemaCollection, schemaClass = Schema) {
         this.schemaCollection = schemaCollection
         this.filePaths = {}
+        this.Schema = schemaClass
 
         this._init()
     }
@@ -22,14 +24,14 @@ class SchemaCollection {
     /**
      *
      * @param {string} name
-     * @returns {{schema: Object, path: string }}
+     * @returns {Schema}
      */
     getByName(name) {
         if (! this.schemaCollection[name]) {
             throw new Error(`${name} is not defined.`)
         }
 
-        return new Schema(name, this.schemaCollection[name].schema)
+        return new this.Schema(name, this.schemaCollection[name].schema)
     }
 
     /**

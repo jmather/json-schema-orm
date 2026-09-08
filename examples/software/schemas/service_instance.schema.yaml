@@ -1,0 +1,14 @@
+orm:
+  singular: Service Instance
+  plural: Service Instances
+type: object
+properties:
+  name:
+    type: string
+    expression: this.service_name + ' ' + this.instance_name
+  instance_name:
+    type: string
+  service_name:
+    type: string
+  details:
+    type: object

@@ -7,11 +7,9 @@ const _ = require('underscore')
 const projectSchemasFile = path.resolve(__dirname, '..', 'bundle/schemas.json')
 const dataPath = path.resolve(__dirname, '..', 'data')
 
-const loader = new JS_ORM.Loader()
+const orm = JS_ORM.Loader.loadSchemas(projectSchemasFile)
 
-const orm = loader.loadSchemas(projectSchemasFile)
-
-loader.loadData(dataPath)
+orm.loadData(dataPath)
 
 // simple get
 // returns: { name: 'Core API', reposiotry: { name: 'Core Project' } }

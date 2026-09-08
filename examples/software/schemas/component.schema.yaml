@@ -22,33 +22,54 @@ orm:
           type: many
     - local_property: child_components
       joins:
-        - schema: component_dependency.schema.yaml
+        - type: many
+          schema: component_dependency.schema.yaml
           local_key: name
           foreign_key: parent_component_name
-          type: many
-        - schema: component.schema.yaml
+        - type: one
+          schema: component.schema.yaml
           local_key: child_component_name
           foreign_key: name
-          type: one
     - local_property: parent_components
       joins:
-        - schema: component_dependency.schema.yaml
+        - type: many
+          schema: component_dependency.schema.yaml
           local_key: name
           foreign_key: child_component_name
-          type: many
-        - schema: component.schema.yaml
+        - type: one
+          schema: component.schema.yaml
           local_key: parent_component_name
           foreign_key: name
-          type: one
     - local_property: environments
       joins:
         - schema: environment_component.schema.yaml
           local_key: name
           foreign_key: component_name
           type: many
+    - local_property: required_services
+      joins:
+        - schema: component_dependency.schema.yaml
+          local_key: name
+          foreign_key: child_component_name
+          type: many
+        - schema: service.schema.yaml
+          local_key: service_name
+          foreign_key: name
+          type: one
+    - local_property: covered_by
+      joins:
+        - schema: team_coverage_item.schema.yaml
+          local_key: name
+          foreign_key: component_name
+          type: many
 type: object
 properties:
   name:
+    type: string
+  type:
+    type: string
+    enum: [ library, application, tool, resources, unknown ]
+  description:
     type: string
   repository_name:
     type: string
@@ -61,6 +82,32 @@ properties:
       properties:
         parent_component_name:
           type: string
+        service_name:
+          type: string
+        service_parameters:
+          type: object
+        config_sets:
+          type: object
+          properties:
+            defaults:
+              type: object
+              additionalProperties:
+                oneOf:
+                  - type: string
+                  - type: boolean
+                  - type: array
+                    items:
+                      type: string
+          additionalProperties:
+            type: object
+            additionalProperties:
+              oneOf:
+                - type: string
+                - type: boolean
+                - type: array
+                  items:
+                    type: string
+      additionalProperties: false
   depended_on_by:
     type: array
     items:
@@ -80,6 +127,10 @@ properties:
           format: uri
         server_name:
           type: string
+        config_sets:
+          type: object
+          additionalProperties:
+            type: string
       required: [ environment_name ]
       additionalProperties: false
 required: [ name ]

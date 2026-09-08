@@ -34,8 +34,9 @@ cli.main((args, options) => {
             schemas = glob.sync(schemaPath)
 
             schemas.forEach(schemaFile => {
+                const relPath = path.relative(process.cwd(), schemaFile)
                 const schema = tools.loadYAML(schemaFile)
-                cli.info(`checking ${schemaFile}...`)
+                cli.info(`checking ${relPath}...`)
 
                 if (!ajv.validateSchema(schema)) {
                     var $schema = schema.$schema;
@@ -43,7 +44,7 @@ cli.main((args, options) => {
                         throw new Error('$schema must be a string')
                     $schema = $schema || ajv._opts.defaultMeta || ajvDefaultMeta(ajv)
 
-                    cli.error(`Error processing ${schemaFile}`)
+                    cli.error(`Error processing ${relPath}`)
                     cli.error(betterAjvErrors($schema, schema, ajv.errors, { format: 'cli', indent: 2}))
                     // cli.error(betterAjvErrors($schema, schema, ajv.errors))
                     // cli.error(tools.prettyJSON(ajv.errors))
@@ -69,12 +70,13 @@ cli.main((args, options) => {
                 schemas = glob.sync(schemaPath)
 
                 schemas.forEach(schemaFile => {
-                    cli.info(`Loading ${schemaFile}...`)
+                    const relPath = path.relative(process.cwd(), schemaFile)
+                    cli.info(`Loading ${relPath}...`)
                     const schema = tools.loadYAML(schemaFile)
-                    cli.info(`Checking ${schemaFile}...`)
+                    cli.info(`Checking ${relPath}...`)
                     const validate = ajv.compile(metaSchema);
                     if (! validate(schema)) {
-                        cli.error(`Error processing ${schemaFile}`)
+                        cli.error(`Error processing ${relPath}`)
                         cli.error(betterAjvErrors(metaSchema, schema, validate.errors, { format: 'cli', indent: 2}));
                         // cli.error(tools.prettyJSON(validate.errors))
                         hadError = true
@@ -101,13 +103,15 @@ cli.main((args, options) => {
             datas = glob.sync(dataPath)
 
             promises = datas.map(dataFile => {
+                const relPath = path.relative(process.cwd(), dataFile)
                 const schemaFile = path.resolve(root, path.basename(dataFile).split('.').splice(-2, 1) + '.schema.yaml')
+                const relPathSchema = path.relative(process.cwd(), schemaFile)
 
                 return refResolver.dereference(schemaFile).then(metaSchema => {
                     cli.info(`checking ${path.basename(dataFile)} against ${path.basename(schemaFile)}...`)
                     const data = tools.loadYAML(dataFile)
                     if (!ajv.validate(metaSchema, data)) {
-                        cli.error(`Error processing ${dataFile}`)
+                        cli.error(`Error processing ${relPath}`)
                         cli.error(betterAjvErrors(metaSchema, data, ajv.errors, { format: 'cli', indent: 2}))
                         // cli.error(tools.prettyJSON(ajv.errors))
                         hadError = true

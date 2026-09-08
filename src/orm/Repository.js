@@ -87,7 +87,7 @@ class Repository {
         const model = this._wrap({})
 
         _.forEach(obj, (propValue, propName) => {
-            this._debug('add', 'setting %s to %o', propName, propValue)
+            this._debug('add')('setting %s to %o', propName, propValue)
             if (this.relationProperties[propName]) {
                 this._debug('add')('Found relation items %s in %s', propName, obj[this.schema.getPrimaryProperty()])
                 const relation = this.relationProperties[propName]
