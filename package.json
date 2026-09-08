@@ -39,7 +39,7 @@
     "sanitize-filename": "^1.6.4",
     "supports-color": "^5.5.0",
     "svg-to-img": "^2.0.9",
-    "underscore": "^1.9.1",
+    "underscore": "^1.13.8",
     "@viz-js/viz": "^3.30.0"
   },
   "devDependencies": {
